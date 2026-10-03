@@ -1,0 +1,475 @@
+"use client";
+
+import styled from "styled-components";
+
+const outcomes = [
+  {
+    number: "01",
+    title: "See the risk.",
+    text: "Understand where manual reporting creates regulatory, audit and operational exposure.",
+  },
+  {
+    number: "02",
+    title: "Connect the data.",
+    text: "See how leading institutions are connecting finance, risk and compliance information.",
+  },
+  {
+    number: "03",
+    title: "Understand AI.",
+    text: "Get a practical view of what AI can and cannot do in reporting and compliance today.",
+  },
+  {
+    number: "04",
+    title: "Think continuously.",
+    text: "Explore how reporting changes when systems become connected, intelligent and continuous.",
+  },
+];
+
+const Arrow = styled.span`
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  opacity: 0.35;
+
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+`;
+
+const ArrowHead = styled.span`
+  position: absolute;
+
+  width: 9px;
+  height: 9px;
+
+  top: 5px;
+  right: 4px;
+
+  border-top: 1.5px solid #111111;
+  border-right: 1.5px solid #111111;
+`;
+
+const ArrowShaft = styled.span`
+  position: absolute;
+
+  width: 18px;
+  height: 1.5px;
+
+  top: 11px;
+  left: 5px;
+
+  background: #111111;
+
+  transform: rotate(-45deg);
+  transform-origin: right center;
+`;
+
+const Section = styled.section`
+  position: relative;
+
+  padding: 120px 0 130px;
+
+  background: #ffffff;
+
+  overflow: hidden;
+
+  @media (max-width: 700px) {
+    padding: 85px 0 95px;
+  }
+`;
+
+const Container = styled.div`
+  width: min(1120px, 90vw);
+
+  margin: 0 auto;
+`;
+
+const Header = styled.div`
+  display: grid;
+
+  grid-template-columns: 1fr 0.65fr;
+
+  align-items: end;
+
+  gap: 70px;
+
+  margin-bottom: 65px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+
+    gap: 22px;
+
+    margin-bottom: 45px;
+  }
+`;
+
+const Eyebrow = styled.div`
+  margin-bottom: 16px;
+
+  color: #b8954a;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+`;
+
+const Heading = styled.h2`
+  max-width: 760px;
+
+  margin: 0;
+
+  color: #111111;
+
+  font-size: clamp(46px, 6vw, 76px);
+
+  line-height: 0.92;
+
+  letter-spacing: -0.065em;
+
+  font-weight: 600;
+
+  span {
+    color: #a7a7a7;
+  }
+
+  @media (max-width: 700px) {
+    font-size: clamp(42px, 13vw, 60px);
+  }
+`;
+
+const Description = styled.p`
+  max-width: 420px;
+
+  margin: 0;
+
+  color: #66666a;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  letter-spacing: -0.015em;
+
+  font-weight: 400;
+
+  @media (max-width: 700px) {
+    max-width: 100%;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+`;
+
+const Stack = styled.div`
+  position: relative;
+
+  max-width: 920px;
+
+  margin: 0 auto;
+
+  padding: 0 45px;
+
+  @media (max-width: 700px) {
+    padding: 0 8px;
+  }
+`;
+
+const Card = styled.article`
+  position: relative;
+
+  min-height: 150px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 35px;
+
+  padding: 28px 34px;
+
+  margin-bottom: 12px;
+
+  background: #f8f8f6;
+
+  border: 1px solid #e7e7e4;
+
+  border-radius: 24px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025), 0 12px 30px rgba(0, 0, 0, 0.018);
+
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.5s ease, border-color 0.5s ease,
+    box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    background: #ffffff;
+
+    border-color: #dcdcd8;
+
+    transform: translateY(-6px) scale(1.012);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.045),
+      0 24px 60px rgba(0, 0, 0, 0.055);
+
+    ${Arrow} {
+      opacity: 1;
+
+      transform: translate(4px, -4px);
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.005);
+  }
+
+  @media (max-width: 700px) {
+    min-height: 150px;
+
+    padding: 23px 21px;
+
+    border-radius: 20px;
+
+    gap: 15px;
+
+    &:hover {
+      transform: translateY(-3px) scale(1.008);
+    }
+  }
+`;
+
+const CardLeft = styled.div`
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 24px;
+
+  min-width: 0;
+
+  @media (max-width: 700px) {
+    gap: 14px;
+  }
+`;
+
+const Number = styled.div`
+  flex-shrink: 0;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #111111;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+  ${Card}:hover & {
+    transform: scale(1.08);
+  }
+
+  @media (max-width: 700px) {
+    width: 32px;
+    height: 32px;
+  }
+`;
+
+const CardContent = styled.div`
+  min-width: 0;
+`;
+
+const CardTitle = styled.h3`
+  margin: 0;
+
+  color: #111111;
+
+  font-size: clamp(23px, 3vw, 35px);
+
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 600;
+
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+`;
+
+const CardText = styled.p`
+  max-width: 560px;
+
+  margin: 10px 0 0;
+
+  color: #6b6b6f;
+
+  font-size: 10px;
+
+  line-height: 1.65;
+
+  letter-spacing: -0.005em;
+`;
+
+const StackShadow = styled.div`
+  position: absolute;
+
+  left: 70px;
+  right: 70px;
+
+  bottom: -10px;
+
+  height: 40px;
+
+  background: rgba(0, 0, 0, 0.035);
+
+  border-radius: 50%;
+
+  filter: blur(20px);
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  @media (max-width: 700px) {
+    left: 30px;
+    right: 30px;
+  }
+`;
+
+const BottomStatement = styled.div`
+  display: grid;
+
+  grid-template-columns: 0.8fr 1.2fr;
+
+  align-items: center;
+
+  gap: 50px;
+
+  margin-top: 85px;
+
+  padding-top: 30px;
+
+  border-top: 1px solid #eeeeee;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-top: 65px;
+  }
+`;
+
+const StatementLabel = styled.div`
+  color: #999999;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.17em;
+
+  text-transform: uppercase;
+`;
+
+const Statement = styled.p`
+  max-width: 650px;
+
+  margin: 0;
+
+  color: #111111;
+
+  font-size: clamp(22px, 3vw, 34px);
+
+  line-height: 1.02;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 500;
+
+  span {
+    color: #a3a3a3;
+  }
+`;
+
+export default function Result() {
+  return (
+    <Section id="results">
+      <Container>
+        <Header>
+          <div>
+            <Eyebrow>WHAT YOU&apos;LL LEARN</Eyebrow>
+
+            <Heading>
+              What changes
+              <br />
+              when <span>manual ends.</span>
+            </Heading>
+          </div>
+
+          <Description>
+            A practical executive conversation designed to help leaders
+            understand the risks, opportunities and decisions that come with
+            connected and intelligent reporting.
+          </Description>
+        </Header>
+
+        <Stack>
+          <StackShadow />
+
+          {outcomes.map((outcome) => (
+            <Card key={outcome.number}>
+              <CardLeft>
+                <Number>{outcome.number}</Number>
+
+                <CardContent>
+                  <CardTitle>{outcome.title}</CardTitle>
+
+                  <CardText>{outcome.text}</CardText>
+                </CardContent>
+              </CardLeft>
+
+              <Arrow>
+                <ArrowHead />
+                <ArrowShaft />
+              </Arrow>
+            </Card>
+          ))}
+        </Stack>
+
+        <BottomStatement>
+          <StatementLabel>THE OUTCOME</StatementLabel>
+
+          <Statement>
+            From <span>manual processes</span> to connected,
+            <br />
+            intelligent reporting.
+          </Statement>
+        </BottomStatement>
+      </Container>
+    </Section>
+  );
+}

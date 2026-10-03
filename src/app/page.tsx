@@ -7,6 +7,7 @@ import Invitee from "./components/Invitee.component";
 import Agenda from "./components/Agenda";
 import Venue from "./components/Venue";
 import Faq from "./components/Faq";
+import Result from "./components/Result";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <Agenda />
       <Venue />
       <Faq />
+      <Result />
       <Footer />
     </>
   );

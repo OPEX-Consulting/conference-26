@@ -1,0 +1,558 @@
+"use client";
+
+import Image from "next/image";
+import styled from "styled-components";
+
+const RESERVATION_URL = "https://workshop.opexconsult.com/";
+
+export default function Footer() {
+  return (
+    <Section>
+      <Container>
+        <Top>
+          <BrandSide>
+            <LogoWrapper>
+              <Image
+                src="/images/opexwhite.webp"
+                alt="OPEX Consulting"
+                width={105}
+                height={42}
+                priority
+              />
+            </LogoWrapper>
+
+            <Heading>
+              The End
+              <br />
+              of <Accent>Manual.</Accent>
+            </Heading>
+
+            <Description>
+              AI, connected systems and the future of financial reporting and
+              compliance.
+            </Description>
+          </BrandSide>
+
+          <ActionSide>
+            <ActionLabel>OPEX EXECUTIVE WORKSHOP & SUMMIT 2026</ActionLabel>
+
+            <EventDate>
+              Wednesday
+              <br />
+              <strong>21 October 2026</strong>
+            </EventDate>
+
+            <Venue>
+              The Wheatbaker
+              <br />
+              Ikoyi, Lagos
+            </Venue>
+
+            <ReserveButton
+              href={RESERVATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Reserve your seat
+              <Arrow>↗</Arrow>
+            </ReserveButton>
+          </ActionSide>
+        </Top>
+
+        <Middle>
+          <Navigation>
+            <NavTitle>EXPLORE</NavTitle>
+
+            <NavLinks>
+              <NavLink href="#about">About</NavLink>
+              <NavLink href="#agenda">Agenda</NavLink>
+              <NavLink href="#invitees">Invitees</NavLink>
+              <NavLink href="#venue">Venue</NavLink>
+              <NavLink href="#faq">FAQ</NavLink>
+            </NavLinks>
+          </Navigation>
+
+          <Contact>
+            <ContactTitle>ENQUIRIES</ContactTitle>
+
+            <ContactLinks>
+              <ContactLink href="tel:+2348087477190">
+                +234 808 747 7190
+              </ContactLink>
+
+              <ContactLink href="tel:+2348024611363">
+                +234 802 461 1363
+              </ContactLink>
+
+              <ContactLink href="mailto:info@opexconsult.co.uk">
+                info@opexconsult.co.uk
+              </ContactLink>
+            </ContactLinks>
+          </Contact>
+        </Middle>
+
+        <Bottom>
+          <Copyright>© 2026 OPEX Consulting LTD</Copyright>
+
+          <Hosted>
+            HOSTED BY <strong>OPEX CONSULTING LTD</strong>
+          </Hosted>
+
+          <BackToTop
+            href="#top"
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+          >
+            Back to top
+            <TopArrow>↑</TopArrow>
+          </BackToTop>
+        </Bottom>
+      </Container>
+    </Section>
+  );
+}
+
+const Section = styled.footer`
+  position: relative;
+
+  width: 100%;
+
+  background: #090909;
+
+  color: #ffffff;
+
+  padding: 110px 0 30px;
+
+  overflow: hidden;
+
+  &::before {
+    content: "";
+
+    position: absolute;
+
+    width: 600px;
+
+    height: 600px;
+
+    top: -350px;
+
+    right: -200px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(
+      circle,
+      rgba(184, 149, 74, 0.12),
+      transparent 65%
+    );
+
+    pointer-events: none;
+  }
+
+  @media (max-width: 700px) {
+    padding: 80px 0 25px;
+  }
+`;
+
+const Container = styled.div`
+  width: min(1200px, 90vw);
+
+  margin: 0 auto;
+
+  position: relative;
+
+  z-index: 1;
+`;
+
+const Top = styled.div`
+  display: grid;
+
+  grid-template-columns: 1.2fr 0.8fr;
+
+  gap: 100px;
+
+  padding-bottom: 100px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+
+    gap: 65px;
+
+    padding-bottom: 70px;
+  }
+`;
+
+const BrandSide = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+`;
+
+const LogoWrapper = styled.div`
+  width: 105px;
+
+  margin-bottom: 55px;
+
+  opacity: 0.95;
+
+  img {
+    width: 100%;
+
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+  }
+
+  @media (max-width: 700px) {
+    width: 95px;
+
+    margin-bottom: 45px;
+  }
+`;
+
+const Heading = styled.h2`
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(58px, 8vw, 108px);
+
+  font-weight: 600;
+
+  line-height: 0.84;
+
+  letter-spacing: -0.08em;
+`;
+
+const Accent = styled.span`
+  color: #b8954a;
+`;
+
+const Description = styled.p`
+  max-width: 430px;
+
+  margin-top: 35px;
+
+  color: #8d8d8d;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  line-height: 1.65;
+
+  letter-spacing: -0.015em;
+
+  @media (max-width: 700px) {
+    font-size: 14px;
+  }
+`;
+
+const ActionSide = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  align-items: flex-start;
+
+  padding-bottom: 4px;
+`;
+
+const ActionLabel = styled.span`
+  margin-bottom: 25px;
+
+  color: #b8954a;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+
+  line-height: 1.5;
+`;
+
+const EventDate = styled.div`
+  color: #ffffff;
+
+  font-size: 26px;
+
+  font-weight: 400;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.04em;
+
+  strong {
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 23px;
+  }
+`;
+
+const Venue = styled.p`
+  margin-top: 22px;
+
+  color: #8d8d8d;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.6;
+`;
+
+const ReserveButton = styled.a`
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 35px;
+
+  padding: 16px 21px;
+
+  border-radius: 999px;
+
+  background: #ffffff;
+
+  color: #111111;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease, background 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+
+    background: #ffffff;
+
+    box-shadow: 0 18px 45px rgba(255, 255, 255, 0.12);
+  }
+`;
+
+const Arrow = styled.span`
+  font-size: 17px;
+
+  transition: transform 0.35s ease;
+
+  ${ReserveButton}:hover & {
+    transform: translate(3px, -3px);
+  }
+`;
+
+const Middle = styled.div`
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 100px;
+
+  padding: 65px 0;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+
+    gap: 50px;
+
+    padding: 55px 0;
+  }
+`;
+
+const Navigation = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+`;
+
+const NavTitle = styled.span`
+  color: #555555;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px 28px;
+`;
+
+const NavLink = styled.a`
+  color: #bdbdbd;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    color: #ffffff;
+
+    transform: translateX(3px);
+  }
+`;
+
+const Contact = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+`;
+
+const ContactTitle = styled.span`
+  color: #555555;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+`;
+
+const ContactLinks = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+`;
+
+const ContactLink = styled.a`
+  width: fit-content;
+
+  color: #bdbdbd;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    color: #ffffff;
+
+    transform: translateX(3px);
+  }
+`;
+
+const Bottom = styled.div`
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  align-items: center;
+
+  min-height: 80px;
+
+  gap: 30px;
+
+  @media (max-width: 700px) {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    padding: 25px 0 5px;
+  }
+`;
+
+const Copyright = styled.span`
+  color: #555555;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.03em;
+`;
+
+const Hosted = styled.span`
+  color: #555555;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+
+  text-align: center;
+
+  strong {
+    color: #777777;
+  }
+
+  @media (max-width: 700px) {
+    text-align: left;
+  }
+`;
+
+const BackToTop = styled.a`
+  justify-self: end;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #777777;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    color: #ffffff;
+
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 700px) {
+    justify-self: auto;
+  }
+`;
+
+const TopArrow = styled.span`
+  font-size: 15px;
+
+  transition: transform 0.3s ease;
+
+  ${BackToTop}:hover & {
+    transform: translateY(-3px);
+  }
+`;

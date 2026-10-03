@@ -1,17 +1,45 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 import Navbar from "./Navbar.component";
 
 export default function Hero() {
+  const [qrOpen, setQrOpen] = useState(false);
+
+  useEffect(() => {
+    if (qrOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [qrOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setQrOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
-    <Container>
+    <Container id="top">
       <Navbar />
 
       <HeroComponent>
         <BackgroundImage />
-
         <Overlay />
 
         <HeroContent>
@@ -62,275 +90,94 @@ export default function Hero() {
           <SmallText>OPEX CONSULTING LTD</SmallText>
         </BottomLeft>
 
-        <QRCodeCard>
+        <QRCodeCard
+          type="button"
+          onClick={() => setQrOpen(true)}
+          aria-label="Open reservation QR code"
+        >
           <QRGlow />
-
           <QRImage src="/images/qrcode.png" alt="Scan to reserve your seat" />
-
           <QRText>SCAN TO RESERVE</QRText>
         </QRCodeCard>
       </HeroComponent>
+
+      {qrOpen && (
+        <QRModalOverlay onClick={() => setQrOpen(false)}>
+          <QRModal
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Reservation QR code"
+          >
+            <CloseButton
+              type="button"
+              onClick={() => setQrOpen(false)}
+              aria-label="Close QR code"
+            >
+              <CloseLine />
+              <CloseLine />
+            </CloseButton>
+
+            <ModalTitle>
+              Reserve
+              <br />
+              your <ModalAccent>seat.</ModalAccent>
+            </ModalTitle>
+
+            <ModalDescription>
+              Scan the QR code with your phone to reserve your seat for the
+              executive workshop and summit.
+            </ModalDescription>
+
+            <LargeQRWrapper>
+              <LargeQR
+                src="/images/qrcode.png"
+                alt="QR code to reserve your seat"
+              />
+            </LargeQRWrapper>
+
+            <ModalHint>SCAN WITH YOUR PHONE CAMERA</ModalHint>
+
+            <ModalLink
+              href="https://workshop.opexconsult.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open reservation page
+              <ModalArrow>↗</ModalArrow>
+            </ModalLink>
+          </QRModal>
+        </QRModalOverlay>
+      )}
     </Container>
   );
 }
 
-const Container = styled.main`
-  width: 100%;
-  min-height: 100vh;
-  background: #000;
-`;
+/* =========================================
+   ANIMATIONS
+========================================= */
 
-const HeroComponent = styled.section`
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 650px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding: 80px 7vw;
-  color: #ffffff;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
 
-  @media (max-width: 768px) {
-    height: 100svh;
-    min-height: 620px;
-    padding: 90px 24px 80px;
+  to {
+    opacity: 1;
   }
 `;
 
-const BackgroundImage = styled.div`
-  position: absolute;
-  inset: 0;
-
-  background-image: url("/images/main.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.84) 0%,
-      rgba(0, 0, 0, 0.64) 45%,
-      rgba(0, 0, 0, 0.3) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.25) 0%,
-      transparent 50%,
-      rgba(0, 0, 0, 0.55) 100%
-    );
-`;
-
-const HeroContent = styled.div`
-  position: relative;
-  z-index: 2;
-  width: min(680px, 100%);
-`;
-
-const Headline = styled.h1`
-  margin: 0;
-
-  color: #ffffff;
-
-  font-size: clamp(58px, 7vw, 105px);
-  font-weight: 600;
-  line-height: 0.88;
-  letter-spacing: -0.075em;
-
-  @media (max-width: 600px) {
-    font-size: clamp(52px, 16vw, 78px);
-    line-height: 0.9;
-  }
-`;
-
-const Accent = styled.span`
-  color: #d0ad65;
-`;
-
-const Subheadline = styled.p`
-  max-width: 600px;
-  margin-top: 25px;
-
-  color: rgba(255, 255, 255, 0.94);
-
-  font-size: clamp(17px, 1.7vw, 23px);
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: -0.03em;
-
-  @media (max-width: 600px) {
-    margin-top: 22px;
-    font-size: 17px;
-  }
-`;
-
-const ValueText = styled.p`
-  max-width: 560px;
-  margin-top: 13px;
-
-  color: rgba(255, 255, 255, 0.65);
-
-  font-size: 12px;
-  line-height: 1.55;
-
-  @media (max-width: 600px) {
-    font-size: 11px;
-    line-height: 1.55;
-  }
-`;
-
-const EventDetails = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 38px;
-  margin-top: 23px;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-  }
-`;
-
-const Detail = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const DetailLabel = styled.span`
-  color: #d0ad65;
-
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-`;
-
-const DetailValue = styled.span`
-  color: rgba(255, 255, 255, 0.88);
-
-  font-size: 11px;
-  font-weight: 500;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 25px;
-
-  @media (max-width: 500px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
-const PrimaryButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-
-  min-height: 48px;
-  padding: 0 22px;
-
-  border-radius: 999px;
-
-  background: #ffffff;
-  color: #111111;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    background: #ffffff;
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.12);
+const modalIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
   }
 
-  @media (max-width: 500px) {
-    width: 100%;
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 `;
-
-const Arrow = styled.span`
-  font-size: 15px;
-
-  transition: transform 0.3s ease;
-
-  ${PrimaryButton}:hover & {
-    transform: translate(2px, -2px);
-  }
-`;
-
-const SecondaryButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 48px;
-  padding: 0 22px;
-
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-
-  color: #ffffff;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  transition: background 0.25s ease, border-color 0.25s ease,
-    transform 0.25s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.65);
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 500px) {
-    width: 100%;
-  }
-`;
-
-const BottomLeft = styled.div`
-  position: absolute;
-  z-index: 3;
-
-  left: 7vw;
-  bottom: 25px;
-
-  @media (max-width: 600px) {
-    left: 24px;
-    bottom: 20px;
-  }
-`;
-
-const SmallText = styled.span`
-  color: rgba(255, 255, 255, 0.45);
-
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-
-  @media (max-width: 600px) {
-    font-size: 7px;
-  }
-`;
-
-/* =========================
-   QR ANIMATIONS
-========================= */
 
 const qrFloatAnimation = keyframes`
   0% {
@@ -374,114 +221,599 @@ const qrFloatAnimation = keyframes`
   }
 `;
 
-const glowAnimation = keyframes`
-  0% {
-    opacity: 0.25;
+const qrGlowAnimation = keyframes`
+  0%,
+  100% {
+    opacity: 0.35;
     transform: scale(0.92);
   }
 
   50% {
-    opacity: 0.55;
+    opacity: 0.8;
     transform: scale(1.08);
-  }
-
-  100% {
-    opacity: 0.25;
-    transform: scale(0.92);
   }
 `;
 
-const QRCodeCard = styled.div`
+/* =========================================
+   HERO
+========================================= */
+
+const Container = styled.main`
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: #000000;
+`;
+
+const HeroComponent = styled.section`
+  position: relative;
+
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+
+  background: #050505;
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  inset: 0;
+
+  background-image: url("/images/main.jpeg");
+  background-size: cover;
+  background-position: center;
+
+  transform: scale(1.01);
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.86) 0%,
+      rgba(0, 0, 0, 0.68) 35%,
+      rgba(0, 0, 0, 0.3) 70%,
+      rgba(0, 0, 0, 0.48) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.58) 100%
+    );
+`;
+
+const HeroContent = styled.div`
+  position: relative;
+  z-index: 2;
+
+  width: min(900px, 90vw);
+
+  margin-left: clamp(30px, 8vw, 130px);
+  padding-top: 100px;
+
+  color: #ffffff;
+
+  @media (max-width: 700px) {
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    padding-top: 80px;
+  }
+`;
+
+const Headline = styled.h1`
+  margin: 0;
+
+  font-size: clamp(64px, 9vw, 138px);
+  line-height: 0.86;
+  letter-spacing: -0.075em;
+  font-weight: 600;
+
+  text-wrap: balance;
+`;
+
+const Accent = styled.span`
+  color: #d0ad65;
+`;
+
+const Subheadline = styled.p`
+  max-width: 590px;
+
+  margin-top: 36px;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+
+  @media (max-width: 700px) {
+    margin-top: 28px;
+    font-size: 15px;
+  }
+`;
+
+const ValueText = styled.p`
+  max-width: 520px;
+
+  margin-top: 18px;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 12px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+
+  @media (max-width: 700px) {
+    font-size: 11px;
+  }
+`;
+
+const EventDetails = styled.div`
+  display: flex;
+  gap: 48px;
+
+  margin-top: 34px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+`;
+
+const Detail = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+`;
+
+const DetailLabel = styled.span`
+  color: #d0ad65;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+`;
+
+const DetailValue = styled.span`
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-top: 36px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const PrimaryButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  border-radius: 100px;
+
+  background: #ffffff;
+  color: #111111;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.25);
+  }
+`;
+
+const SecondaryButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding: 0 20px;
+
+  border-radius: 100px;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  transition: color 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+`;
+
+const Arrow = styled.span`
+  font-size: 16px;
+
+  transition: transform 0.25s ease;
+
+  ${PrimaryButton}:hover & {
+    transform: translate(3px, -3px);
+  }
+`;
+
+const BottomLeft = styled.div`
+  position: absolute;
+  z-index: 3;
+
+  left: clamp(30px, 8vw, 130px);
+  bottom: 34px;
+
+  @media (max-width: 700px) {
+    left: 20px;
+    bottom: 24px;
+  }
+`;
+
+const SmallText = styled.span`
+  color: rgba(255, 255, 255, 0.48);
+
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+`;
+
+/* =========================================
+   QR CARD
+========================================= */
+
+const QRCodeCard = styled.button`
   position: absolute;
   z-index: 4;
 
-  right: 7vw;
-  bottom: 28px;
+  right: clamp(24px, 5vw, 70px);
+  bottom: 32px;
 
   width: 108px;
+  height: 108px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 
-  padding: 9px;
+  padding: 10px;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 16px;
+  cursor: pointer;
 
-  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  border-radius: 18px;
 
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.96);
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
 
   animation: ${qrFloatAnimation} 2.2s ease-in-out infinite;
 
-  transform-origin: center bottom;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    animation-play-state: paused;
+
+    transform: translateY(-5px) scale(1.04);
+
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.32),
+      0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
 
   @media (max-width: 600px) {
-    right: 24px;
-    bottom: 18px;
+    right: 20px;
+    bottom: 20px;
 
     width: 88px;
-    padding: 7px;
+    height: 88px;
 
-    border-radius: 13px;
+    padding: 8px;
+
+    border-radius: 14px;
   }
 `;
 
 const QRGlow = styled.div`
   position: absolute;
+  inset: -10px;
 
-  width: 90px;
-  height: 90px;
+  z-index: -1;
 
-  border-radius: 50%;
+  border-radius: 24px;
 
-  background: rgba(208, 173, 101, 0.3);
+  background: radial-gradient(
+    circle,
+    rgba(208, 173, 101, 0.38) 0%,
+    rgba(208, 173, 101, 0) 70%
+  );
 
-  filter: blur(30px);
+  filter: blur(8px);
 
-  animation: ${glowAnimation} 3s ease-in-out infinite;
+  animation: ${qrGlowAnimation} 3s ease-in-out infinite;
 
   pointer-events: none;
-
-  @media (max-width: 600px) {
-    width: 70px;
-    height: 70px;
-  }
 `;
 
 const QRImage = styled.img`
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
-  width: 90px;
-  height: 90px;
+  width: 72px;
+  height: 72px;
 
-  display: block;
-
-  border-radius: 8px;
-
-  background: #ffffff;
-
-  object-fit: cover;
+  object-fit: contain;
 
   @media (max-width: 600px) {
-    width: 72px;
-    height: 72px;
+    width: 58px;
+    height: 58px;
   }
 `;
 
 const QRText = styled.span`
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
-  color: rgba(255, 255, 255, 0.65);
+  margin-top: 4px;
+
+  color: #111111;
 
   font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+
+  @media (max-width: 600px) {
+    font-size: 5px;
+  }
+`;
+
+/* =========================================
+   QR MODAL
+========================================= */
+
+const QRModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  animation: ${fadeIn} 0.25s ease;
+`;
+
+const QRModal = styled.div`
+  position: relative;
+
+  width: min(390px, 100%);
+  max-height: 90vh;
+
+  padding: 34px 30px 28px;
+
+  overflow-y: auto;
+
+  border-radius: 24px;
+
+  background: #0c0c0c;
+
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 8px 30px rgba(0, 0, 0, 0.25);
+
+  animation: ${modalIn} 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (max-width: 600px) {
+    width: min(350px, 100%);
+
+    padding: 30px 22px 24px;
+
+    border-radius: 22px;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  transition: background 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.13);
+
+    transform: rotate(90deg);
+  }
+`;
+
+const CloseLine = styled.span`
+  position: absolute;
+
+  width: 13px;
+  height: 1px;
+
+  background: #ffffff;
+
+  &:first-child {
+    transform: rotate(45deg);
+  }
+
+  &:last-child {
+    transform: rotate(-45deg);
+  }
+`;
+
+const ModalEyebrow = styled.div`
+  margin-bottom: 14px;
+
+  color: #d0ad65;
+
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
+  text-transform: uppercase;
 
-  white-space: nowrap;
+  padding-right: 35px;
+`;
+
+const ModalTitle = styled.h2`
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(34px, 6vw, 46px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+`;
+
+const ModalAccent = styled.span`
+  color: #d0ad65;
+`;
+
+const ModalDescription = styled.p`
+  max-width: 320px;
+
+  margin: 18px 0 24px;
+
+  color: #8e8e93;
+
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+`;
+
+const LargeQRWrapper = styled.div`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 205px;
+  height: 205px;
+
+  margin: 0 auto 18px;
+
+  padding: 12px;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 600px) {
+    width: 190px;
+    height: 190px;
+  }
+`;
+
+const LargeQR = styled.img`
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+`;
+
+const ModalHint = styled.div`
+  margin-bottom: 20px;
+
+  color: #666666;
+
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-align: center;
+`;
+
+const ModalLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  height: 44px;
+
+  border-radius: 100px;
+
+  background: #ffffff;
+  color: #111111;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  transition: transform 0.25s ease, background 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+
+    background: #f1f1f1;
+  }
+`;
+
+const ModalArrow = styled.span`
+  font-size: 15px;
+
+  transition: transform 0.25s ease;
+
+  ${ModalLink}:hover & {
+    transform: translate(2px, -2px);
+  }
 `;

@@ -131,7 +131,7 @@ const NavbarContainer = styled.nav<{ $scrolled: boolean }>`
 
   width: ${({ $scrolled }) => ($scrolled ? "min(900px, 92vw)" : "100%")};
 
-  max-width: ${({ $scrolled }) => ($scrolled ? "900px" : "1320px")};
+  max-width: ${({ $scrolled }) => ($scrolled ? "700px" : "1320px")};
 
   height: ${({ $scrolled }) => ($scrolled ? "58px" : "72px")};
 

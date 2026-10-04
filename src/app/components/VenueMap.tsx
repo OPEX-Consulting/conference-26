@@ -1,16 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
-
 const VenueMapClient = dynamic(() => import("./VenueMapClient"), {
   ssr: false,
   loading: () => <div className="venue-map-loading">Loading map...</div>,
 });
-
 export default function VenueMap() {
   return (
     <>
       <VenueMapClient />
-
       <style jsx>{`
         .venue-map-loading {
           width: 100%;

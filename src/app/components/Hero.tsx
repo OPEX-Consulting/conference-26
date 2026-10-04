@@ -11,7 +11,6 @@ export default function Hero() {
 
   useEffect(() => {
     document.body.style.overflow = qrOpen ? "hidden" : "";
-
     return () => {
       document.body.style.overflow = "";
     };
@@ -23,9 +22,7 @@ export default function Hero() {
         setQrOpen(false);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };

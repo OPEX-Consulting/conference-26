@@ -31,7 +31,7 @@ export default function Navbar() {
   return (
     <NavWrapper $scrolled={scrolled}>
       <NavbarContainer $scrolled={scrolled}>
-        <Logo href="/" onClick={closeMenu}>
+        <Logo href="/" onClick={closeMenu} aria-label="OPEX Consulting home">
           <Image
             src="/images/opexwhite.webp"
             alt="OPEX Consulting"
@@ -41,11 +41,11 @@ export default function Navbar() {
           />
         </Logo>
 
-        <DesktopNavigation>
+        <DesktopNavigation aria-label="Main navigation">
           <NavLink href="#about">About</NavLink>
           <NavLink href="#agenda">Agenda</NavLink>
           <NavLink href="#sessions">Sessions</NavLink>
-          <NavLink href="#venue">Venue</NavLink>
+          <NavLink href="#invitees">Invitees</NavLink>
           <NavLink href="#faq">FAQ</NavLink>
         </DesktopNavigation>
 
@@ -55,21 +55,26 @@ export default function Navbar() {
           rel="noopener noreferrer"
         >
           Reserve your seat
-          <Arrow>↗</Arrow>
+          <Arrow aria-hidden="true">↗</Arrow>
         </DesktopCTA>
 
         <MobileMenuButton
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
         >
           <MenuLine $open={menuOpen} />
           <MenuLine $open={menuOpen} />
         </MobileMenuButton>
       </NavbarContainer>
 
-      <MobileMenu $open={menuOpen}>
+      <MobileMenu
+        id="mobile-navigation"
+        $open={menuOpen}
+        aria-label="Mobile navigation"
+      >
         <MobileLink href="#about" onClick={closeMenu}>
           About
         </MobileLink>
@@ -82,8 +87,8 @@ export default function Navbar() {
           Sessions
         </MobileLink>
 
-        <MobileLink href="#venue" onClick={closeMenu}>
-          Venue
+        <MobileLink href="#invitees" onClick={closeMenu}>
+          Invitees
         </MobileLink>
 
         <MobileLink href="#faq" onClick={closeMenu}>
@@ -97,7 +102,7 @@ export default function Navbar() {
           onClick={closeMenu}
         >
           Reserve your seat
-          <Arrow>↗</Arrow>
+          <Arrow aria-hidden="true">↗</Arrow>
         </MobileCTA>
       </MobileMenu>
     </NavWrapper>
@@ -150,7 +155,7 @@ const NavbarContainer = styled.nav<{ $scrolled: boolean }>`
   border-radius: ${({ $scrolled }) => ($scrolled ? "100px" : "0")};
 
   background: ${({ $scrolled }) =>
-    $scrolled ? "rgba(0, 0, 0, 0.94)" : "transparent"};
+    $scrolled ? "rgba(0, 0, 0, 0.96)" : "transparent"};
 
   backdrop-filter: ${({ $scrolled }) => ($scrolled ? "blur(24px)" : "none")};
 
@@ -185,6 +190,8 @@ const Logo = styled.a`
 
   flex-shrink: 0;
 
+  border-radius: 8px;
+
   img {
     width: 62px;
 
@@ -193,6 +200,11 @@ const Logo = styled.a`
     display: block;
 
     transition: width 0.3s ease;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 5px;
   }
 
   @media (max-width: 768px) {
@@ -221,13 +233,15 @@ const DesktopNavigation = styled.div`
 `;
 
 const NavLink = styled.a`
-  color: rgba(255, 255, 255, 0.72);
+  color: #eeeeee;
 
   font-size: 12px;
 
   font-weight: 500;
 
   letter-spacing: -0.01em;
+
+  border-radius: 6px;
 
   transition: color 0.25s ease, font-weight 0.25s ease, transform 0.25s ease;
 
@@ -237,6 +251,14 @@ const NavLink = styled.a`
     font-weight: 700;
 
     transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+
+    outline-offset: 5px;
+
+    color: #ffffff;
   }
 `;
 
@@ -284,6 +306,12 @@ const DesktopCTA = styled.a`
     transform: translateY(0) scale(0.98);
   }
 
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+
+    outline-offset: 4px;
+  }
+
   @media (max-width: 900px) {
     display: none;
   }
@@ -318,7 +346,7 @@ const MobileMenuButton = styled.button`
 
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
 
   cursor: pointer;
 
@@ -327,11 +355,17 @@ const MobileMenuButton = styled.button`
   &:hover {
     transform: scale(1.05);
 
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.18);
   }
 
   &:active {
     transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+
+    outline-offset: 4px;
   }
 
   @media (max-width: 900px) {
@@ -367,7 +401,7 @@ const MobileMenu = styled.div<{ $open: boolean }>`
 
     position: absolute;
 
-    top: 68px;
+    top: ${({ $open }) => ($open ? "68px" : "68px")};
 
     left: 4vw;
 
@@ -377,11 +411,11 @@ const MobileMenu = styled.div<{ $open: boolean }>`
 
     padding: 10px;
 
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
     border-radius: 24px;
 
-    background: rgba(0, 0, 0, 0.96);
+    background: rgba(0, 0, 0, 0.97);
 
     backdrop-filter: blur(25px);
 
@@ -405,7 +439,7 @@ const MobileLink = styled.a`
 
   padding: 14px;
 
-  color: rgba(255, 255, 255, 0.8);
+  color: #f1f1f1;
 
   font-size: 12px;
 
@@ -417,13 +451,23 @@ const MobileLink = styled.a`
     font-weight 0.25s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
 
     color: #ffffff;
 
     font-weight: 700;
 
     padding-left: 17px;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+
+    outline-offset: -2px;
+
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.08);
   }
 `;
 
@@ -469,5 +513,11 @@ const MobileCTA = styled.a`
 
   &:active {
     transform: translateY(0) scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+
+    outline-offset: 4px;
   }
 `;

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styled from "styled-components";
 
 const RESERVATION_URL = "https://workshop.opexconsult.com/";
@@ -19,7 +18,7 @@ const agenda = [
     time: "11:30",
     end: "12:00",
     type: "NETWORKING",
-    title: "Executive Breakfast",
+    title: "Refreshments & Networking",
     description:
       "An informal opportunity for delegates to connect, exchange perspectives and continue the morning conversation.",
     audience: "Morning Workshop Delegates",
@@ -31,7 +30,8 @@ const agenda = [
     title: "C-Level Summit",
     description:
       "A broader executive conversation exploring connected systems, governance, risk, compliance and what AI means for the future of financial reporting.",
-    audience: "CIOs · CTOs · CCOs · CROs · Senior Executives",
+    audience:
+      "CIOs · CTOs · Chief Compliance Officers · Chief Risk Officers · Chief Information Security Officers · Chief Audit Executives · Senior Technology, Risk & Compliance Leaders",
   },
   {
     time: "14:00",
@@ -45,8 +45,6 @@ const agenda = [
 ];
 
 export default function Agenda() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   return (
     <Section id="agenda">
       <Container>
@@ -76,20 +74,14 @@ export default function Agenda() {
 
         <Timeline>
           {agenda.map((item, index) => (
-            <AgendaItem
-              key={`${item.time}-${item.title}`}
-              $active={activeIndex === index}
-              $dimmed={activeIndex !== null && activeIndex !== index}
-              onMouseEnter={() => setActiveIndex(index)}
-              onMouseLeave={() => setActiveIndex(null)}
-            >
+            <AgendaItem key={`${item.time}-${item.title}`}>
               <TimeColumn>
                 <Time>{item.time}</Time>
                 <EndTime>{item.end}</EndTime>
               </TimeColumn>
 
               <DotColumn>
-                <Dot $active={activeIndex === index} />
+                <Dot />
 
                 {index !== agenda.length - 1 && <Line />}
               </DotColumn>
@@ -134,7 +126,7 @@ export default function Agenda() {
             rel="noopener noreferrer"
           >
             Reserve your seat
-            <Arrow>↗</Arrow>
+            <Arrow aria-hidden="true">↗</Arrow>
           </BottomCTA>
         </Bottom>
       </Container>
@@ -187,7 +179,7 @@ const Eyebrow = styled.span`
 
   margin-bottom: 22px;
 
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 9px;
 
@@ -217,7 +209,7 @@ const Heading = styled.h2`
 `;
 
 const Accent = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 `;
 
 const HeaderRight = styled.div`
@@ -233,7 +225,7 @@ const HeaderRight = styled.div`
 const Intro = styled.p`
   max-width: 430px;
 
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 13px;
 
@@ -253,7 +245,7 @@ const Date = styled.div`
 `;
 
 const DateLabel = styled.span`
-  color: #999999;
+  color: #666666;
 
   font-size: 8px;
 
@@ -276,10 +268,7 @@ const Timeline = styled.div`
   position: relative;
 `;
 
-const AgendaItem = styled.div<{
-  $active: boolean;
-  $dimmed: boolean;
-}>`
+const AgendaItem = styled.div`
   position: relative;
 
   display: grid;
@@ -288,30 +277,24 @@ const AgendaItem = styled.div<{
 
   min-height: 220px;
 
-  opacity: ${({ $dimmed }) => ($dimmed ? 0.38 : 1)};
-
-  transform: ${({ $active }) =>
-    $active ? "translateX(10px) scale(1.008)" : "translateX(0) scale(1)"};
-
   transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-
-  cursor: pointer;
 
   @media (max-width: 700px) {
     grid-template-columns: 65px 20px 1fr;
 
     min-height: 250px;
+  }
 
-    transform: ${({ $active }) =>
-      $active ? "translateX(5px)" : "translateX(0)"};
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
 const HoverGlow = styled.div`
   position: absolute;
 
-  z-index: -1;
+  z-index: 0;
 
   top: -15px;
 
@@ -325,7 +308,7 @@ const HoverGlow = styled.div`
 
   background: radial-gradient(
     circle at 20% 50%,
-    rgba(184, 149, 74, 0.08),
+    rgba(138, 104, 40, 0.08),
     transparent 45%
   );
 
@@ -344,9 +327,17 @@ const HoverGlow = styled.div`
 
     right: -10px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const TimeColumn = styled.div`
+  position: relative;
+
+  z-index: 2;
+
   padding-top: 3px;
 
   text-align: right;
@@ -372,7 +363,7 @@ const Time = styled.span`
   transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease;
 
   ${AgendaItem}:hover & {
-    color: #b8954a;
+    color: #8a6828;
 
     font-size: 20px;
   }
@@ -384,6 +375,10 @@ const Time = styled.span`
       font-size: 15px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: color 0.2s ease;
+  }
 `;
 
 const EndTime = styled.span`
@@ -391,7 +386,7 @@ const EndTime = styled.span`
 
   margin-top: 3px;
 
-  color: #aaaaaa;
+  color: #666666;
 
   font-size: 9px;
 
@@ -400,41 +395,50 @@ const EndTime = styled.span`
   transition: color 0.4s ease;
 
   ${AgendaItem}:hover & {
-    color: #888888;
+    color: #555555;
   }
 `;
 
 const DotColumn = styled.div`
   position: relative;
 
+  z-index: 2;
+
   display: flex;
 
   justify-content: center;
 `;
 
-const Dot = styled.span<{ $active: boolean }>`
+const Dot = styled.span`
   position: relative;
 
   z-index: 2;
 
-  width: ${({ $active }) => ($active ? "13px" : "8px")};
+  width: 9px;
 
-  height: ${({ $active }) => ($active ? "13px" : "8px")};
+  height: 9px;
 
-  margin-top: ${({ $active }) => ($active ? "6px" : "7px")};
+  margin-top: 7px;
 
   border-radius: 50%;
 
-  background: ${({ $active }) => ($active ? "#b8954a" : "#c9c9c9")};
+  background: #8a6828;
 
-  box-shadow: ${({ $active }) =>
-    $active
-      ? "0 0 0 6px rgba(184, 149, 74, 0.12), 0 4px 15px rgba(184, 149, 74, 0.25)"
-      : "none"};
+  box-shadow: 0 0 0 5px rgba(138, 104, 40, 0.08),
+    0 3px 10px rgba(138, 104, 40, 0.16);
 
-  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.4s cubic-bezier(0.22, 1, 0.36, 1), margin-top 0.4s ease,
-    background 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  ${AgendaItem}:hover & {
+    transform: scale(1.35);
+
+    box-shadow: 0 0 0 6px rgba(138, 104, 40, 0.12),
+      0 4px 15px rgba(138, 104, 40, 0.22);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const Line = styled.div`
@@ -446,13 +450,17 @@ const Line = styled.div`
 
   width: 1px;
 
-  background: #dededc;
+  background: #d5d5d3;
 `;
 
 const Content = styled.div`
+  position: relative;
+
+  z-index: 2;
+
   padding: 0 0 70px 35px;
 
-  border-bottom: 1px solid #e4e4e2;
+  border-bottom: 1px solid #d9d9d7;
 
   @media (max-width: 700px) {
     padding: 0 0 55px 20px;
@@ -470,7 +478,7 @@ const TopRow = styled.div`
 `;
 
 const Type = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 8px;
 
@@ -483,10 +491,14 @@ const Type = styled.span`
   ${AgendaItem}:hover & {
     letter-spacing: 0.2em;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: color 0.2s ease;
+  }
 `;
 
 const Index = styled.span`
-  color: #bdbdbd;
+  color: #666666;
 
   font-size: 9px;
 
@@ -497,9 +509,13 @@ const Index = styled.span`
   transition: color 0.4s ease, transform 0.4s ease;
 
   ${AgendaItem}:hover & {
-    color: #b8954a;
+    color: #8a6828;
 
     transform: translateX(-5px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: color 0.2s ease;
   }
 `;
 
@@ -530,6 +546,10 @@ const Title = styled.h3`
 
     line-height: 1.02;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const Description = styled.p`
@@ -537,7 +557,7 @@ const Description = styled.p`
 
   margin-top: 18px;
 
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 12px;
 
@@ -550,9 +570,13 @@ const Description = styled.p`
   transition: color 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   ${AgendaItem}:hover & {
-    color: #555555;
+    color: #333333;
 
     transform: translateX(5px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: color 0.2s ease;
   }
 `;
 
@@ -578,10 +602,14 @@ const Audience = styled.div`
 
     gap: 5px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const AudienceLabel = styled.span`
-  color: #aaaaaa;
+  color: #666666;
 
   font-size: 7px;
 
@@ -627,7 +655,7 @@ const BottomLeft = styled.div`
 `;
 
 const BottomNumber = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 8px;
 
@@ -637,7 +665,7 @@ const BottomNumber = styled.span`
 `;
 
 const BottomText = styled.p`
-  color: #777777;
+  color: #555555;
 
   font-size: 10px;
 
@@ -677,6 +705,24 @@ const BottomCTA = styled.a`
 
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   }
+
+  &:focus-visible {
+    outline: 3px solid #8a6828;
+
+    outline-offset: 4px;
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: background 0.2s ease;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const Arrow = styled.span`
@@ -686,5 +732,9 @@ const Arrow = styled.span`
 
   ${BottomCTA}:hover & {
     transform: translate(3px, -3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -37,7 +36,7 @@ const faqs = [
   {
     question: "Will food and refreshments be provided?",
     answer:
-      "Yes. Breakfast will be served during the morning networking session, and lunch will be provided during the afternoon summit.",
+      "Yes. Refreshments will be served during the morning networking break, and lunch will be provided during the afternoon summit.",
   },
   {
     question: "Where is the event taking place?",
@@ -77,25 +76,31 @@ export default function Faq() {
         <FaqList>
           {faqs.map((faq, index) => {
             const isOpen = activeIndex === index;
+            const answerId = `faq-answer-${index}`;
 
             return (
-              <FaqItem
-                key={faq.question}
-                $open={isOpen}
-                onClick={() => toggleFaq(index)}
-              >
-                <QuestionRow>
+              <FaqItem key={faq.question} $open={isOpen}>
+                <QuestionButton
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={answerId}
+                  onClick={() => toggleFaq(index)}
+                >
                   <Number>{String(index + 1).padStart(2, "0")}</Number>
 
                   <Question>{faq.question}</Question>
 
-                  <Plus $open={isOpen}>
+                  <Plus $open={isOpen} aria-hidden="true">
                     <Horizontal $open={isOpen} />
                     <Vertical $open={isOpen} />
                   </Plus>
-                </QuestionRow>
+                </QuestionButton>
 
-                <AnswerWrapper $open={isOpen}>
+                <AnswerWrapper
+                  id={answerId}
+                  $open={isOpen}
+                  aria-hidden={!isOpen}
+                >
                   <Answer $open={isOpen}>{faq.answer}</Answer>
                 </AnswerWrapper>
               </FaqItem>
@@ -108,7 +113,7 @@ export default function Faq() {
 
           <Contact href="mailto:info@opexconsult.co.uk">
             Contact OPEX
-            <Arrow>↗</Arrow>
+            <Arrow aria-hidden="true">↗</Arrow>
           </Contact>
         </Bottom>
       </Container>
@@ -152,7 +157,8 @@ const Eyebrow = styled.span`
   display: block;
   margin-bottom: 22px;
 
-  color: #b8954a;
+  color: #8a6828;
+
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.17em;
@@ -175,7 +181,7 @@ const Heading = styled.h2`
 `;
 
 const Accent = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 `;
 
 const HeaderRight = styled.div`
@@ -184,8 +190,9 @@ const HeaderRight = styled.div`
 
 const Intro = styled.p`
   max-width: 400px;
+  margin: 0;
 
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 15px;
   font-weight: 500;
@@ -200,22 +207,25 @@ const FaqList = styled.div`
 const FaqItem = styled.div<{ $open: boolean }>`
   position: relative;
 
-  border-top: 1px solid #e8e8e8;
-
-  cursor: pointer;
+  border-top: 1px solid #e5e5e5;
 
   transition: background 0.35s ease;
 
   &:last-child {
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e5e5e5;
   }
 
   &:hover {
     background: ${({ $open }) => ($open ? "transparent" : "#fafafa")};
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
-const QuestionRow = styled.div`
+const QuestionButton = styled.button`
+  width: 100%;
   min-height: 105px;
 
   display: grid;
@@ -225,26 +235,36 @@ const QuestionRow = styled.div`
 
   padding: 0 10px;
 
+  border: 0;
+  background: transparent;
+  color: inherit;
+
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid #8a6828;
+    outline-offset: -3px;
+    border-radius: 4px;
+  }
+
   @media (max-width: 700px) {
     min-height: 88px;
-
     grid-template-columns: 42px 1fr 35px;
-
     gap: 12px;
-
     padding: 0 5px;
   }
 `;
 
 const Number = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
 `;
 
-const Question = styled.h3`
+const Question = styled.span`
   margin: 0;
 
   color: #111111;
@@ -257,7 +277,7 @@ const Question = styled.h3`
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     letter-spacing 0.35s ease;
 
-  ${FaqItem}:hover & {
+  ${QuestionButton}:hover & {
     transform: translateX(4px);
     letter-spacing: -0.045em;
   }
@@ -265,9 +285,18 @@ const Question = styled.h3`
   @media (max-width: 700px) {
     font-size: 16px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    ${QuestionButton}:hover & {
+      transform: none;
+      letter-spacing: -0.035em;
+    }
+  }
 `;
 
-const Plus = styled.div<{ $open: boolean }>`
+const Plus = styled.span<{ $open: boolean }>`
   position: relative;
 
   width: 34px;
@@ -286,13 +315,17 @@ const Plus = styled.div<{ $open: boolean }>`
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.3s ease;
 
-  ${FaqItem}:hover & {
+  ${QuestionButton}:hover & {
     background: ${({ $open }) => ($open ? "#111111" : "#e9e9e6")};
   }
 
   @media (max-width: 700px) {
     width: 30px;
     height: 30px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
@@ -320,6 +353,10 @@ const Vertical = styled.span<{ $open: boolean }>`
   transform: ${({ $open }) => ($open ? "scaleY(0)" : "scaleY(1)")};
 
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const AnswerWrapper = styled.div<{ $open: boolean }>`
@@ -328,6 +365,10 @@ const AnswerWrapper = styled.div<{ $open: boolean }>`
   grid-template-rows: ${({ $open }) => ($open ? "1fr" : "0fr")};
 
   transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const Answer = styled.div<{ $open: boolean }>`
@@ -338,7 +379,7 @@ const Answer = styled.div<{ $open: boolean }>`
 
   padding: 0 80px 0 100px;
 
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 15px;
   font-weight: 500;
@@ -371,6 +412,11 @@ const Answer = styled.div<{ $open: boolean }>`
         padding-bottom: 30px;
       `}
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: none;
+  }
 `;
 
 const Bottom = styled.div`
@@ -388,7 +434,7 @@ const Bottom = styled.div`
 `;
 
 const BottomText = styled.span`
-  color: #777777;
+  color: #555555;
 
   font-size: 13px;
   font-weight: 500;
@@ -414,8 +460,20 @@ const Contact = styled.a`
 
   &:hover {
     transform: translateY(-3px);
-
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.14);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #8a6828;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -426,5 +484,9 @@ const Arrow = styled.span`
 
   ${Contact}:hover & {
     transform: translate(2px, -2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;

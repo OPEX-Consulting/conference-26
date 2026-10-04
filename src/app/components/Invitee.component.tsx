@@ -1,7 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
+import styled, { keyframes } from "styled-components";
+
+const reveal = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const logos = [
   {
@@ -35,8 +48,31 @@ const logos = [
 ];
 
 export default function Invitee() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.12,
+      }
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <Section id="invitees">
+    <Section ref={sectionRef} id="invitees">
       <Container>
         <Top>
           <Left>
@@ -45,7 +81,7 @@ export default function Invitee() {
             <Heading>
               Featuring insights
               <br />
-              from <Accent>leaders at.</Accent>
+              from <Accent>leaders.</Accent>
             </Heading>
           </Left>
 
@@ -58,10 +94,15 @@ export default function Invitee() {
           </Right>
         </Top>
 
-        <LogoGrid>
-          {logos.map((logo) => (
-            <LogoCard key={logo.name}>
-              <Logo src={logo.src} alt={logo.name} width={260} height={110} />
+        <LogoGrid $visible={visible}>
+          {logos.map((logo, index) => (
+            <LogoCard key={logo.name} $delay={`${0.08 * index}s`}>
+              <Logo
+                src={logo.src}
+                alt={`${logo.name} logo`}
+                width={260}
+                height={110}
+              />
             </LogoCard>
           ))}
         </LogoGrid>
@@ -74,6 +115,7 @@ const Section = styled.section`
   width: 100%;
   background: #ffffff;
   padding: 115px 0 125px;
+  overflow: hidden;
 
   @media (max-width: 700px) {
     padding: 85px 0 95px;
@@ -107,7 +149,8 @@ const Eyebrow = styled.span`
   display: block;
   margin-bottom: 20px;
 
-  color: #b8954a;
+  color: #8a6828;
+
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -122,6 +165,7 @@ const Heading = styled.h2`
   margin: 0;
 
   color: #111111;
+
   font-size: clamp(48px, 5.7vw, 78px);
   font-weight: 600;
   line-height: 0.92;
@@ -134,7 +178,7 @@ const Heading = styled.h2`
 `;
 
 const Accent = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 `;
 
 const Right = styled.div`
@@ -149,7 +193,8 @@ const Description = styled.p`
   max-width: 430px;
   margin: 0;
 
-  color: #777777;
+  color: #555555;
+
   font-size: 13px;
   font-weight: 500;
   line-height: 1.7;
@@ -161,11 +206,15 @@ const Description = styled.p`
   }
 `;
 
-const LogoGrid = styled.div`
+const LogoGrid = styled.div<{ $visible: boolean }>`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   gap: 12px;
+
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+
+  animation: ${({ $visible }) => ($visible ? reveal : "none")} 0.9s
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
   @media (max-width: 700px) {
     grid-template-columns: repeat(2, 1fr);
@@ -175,9 +224,14 @@ const LogoGrid = styled.div`
   @media (max-width: 450px) {
     grid-template-columns: 1fr;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+  }
 `;
 
-const LogoCard = styled.div`
+const LogoCard = styled.div<{ $delay: string }>`
   position: relative;
 
   height: 165px;
@@ -192,10 +246,10 @@ const LogoCard = styled.div`
   border-radius: 18px;
 
   background: #ffffff;
-
-  cursor: pointer;
-
   overflow: visible;
+
+  animation: ${reveal} 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: ${({ $delay }) => $delay};
 
   transition: background 0.45s ease, border-color 0.45s ease,
     box-shadow 0.45s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -204,10 +258,9 @@ const LogoCard = styled.div`
     z-index: 5;
 
     background: #fafafa;
-
     border-color: #e5e5e5;
 
-    transform: translateY(-7px);
+    transform: translateY(-5px);
 
     box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(0, 0, 0, 0.04);
   }
@@ -216,6 +269,15 @@ const LogoCard = styled.div`
     height: 145px;
     padding: 25px;
     border-radius: 15px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -227,7 +289,7 @@ const Logo = styled(Image)`
   object-fit: contain;
 
   filter: grayscale(1);
-  opacity: 0.5;
+  opacity: 0.55;
 
   transform: scale(1);
 
@@ -238,11 +300,15 @@ const Logo = styled(Image)`
   ${LogoCard}:hover & {
     filter: grayscale(0);
     opacity: 1;
-    transform: scale(1.14);
+    transform: scale(1.08);
   }
 
   @media (max-width: 700px) {
     max-width: 180px;
     height: 60px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;

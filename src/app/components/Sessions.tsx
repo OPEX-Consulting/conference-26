@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -89,7 +88,7 @@ export default function Sessions() {
         </Header>
 
         <Bento>
-          <SessionCard $theme="gold" $delay="0.1s">
+          <SessionCard $theme="gold" $delay="0.1s" $visible={visible}>
             <CardGlow />
 
             <CardTop>
@@ -124,12 +123,10 @@ export default function Sessions() {
 
                 <MetaText>Group CFOs, CFOs & senior finance leaders</MetaText>
               </Audience>
-
-              <CircleArrow>↗</CircleArrow>
             </CardBottom>
           </SessionCard>
 
-          <SessionCard $theme="navy" $delay="0.25s">
+          <SessionCard $theme="navy" $delay="0.25s" $visible={visible}>
             <CardGlow />
 
             <CardTop>
@@ -160,34 +157,36 @@ export default function Sessions() {
               <Audience>
                 <MetaLabel>WHO IT IS FOR</MetaLabel>
 
-                <MetaText>CIOs, CTOs, CCOs, CROs & senior executives</MetaText>
+                <MetaText>
+                  CIOs · CTOs · Chief Compliance Officers · Chief Risk Officers
+                  · Chief Information Security Officers · Chief Audit Executives
+                  · Senior Technology, Risk & Compliance Leaders
+                </MetaText>
               </Audience>
-
-              <CircleArrow>↗</CircleArrow>
             </CardBottom>
           </SessionCard>
 
-          <InfoCard $type="breakfast" $delay="0.4s">
+          <InfoCard $type="breakfast" $delay="0.4s" $visible={visible}>
             <InfoTop>
               <InfoNumber>03</InfoNumber>
 
-              <InfoIcon>☼</InfoIcon>
+              <InfoIcon aria-hidden="true">☼</InfoIcon>
             </InfoTop>
 
             <InfoContent>
               <InfoLabel>NETWORKING</InfoLabel>
 
-              <InfoTitle>Breakfast</InfoTitle>
+              <InfoTitle>Refreshments & Networking</InfoTitle>
 
               <InfoTime>11:30 — 12:00</InfoTime>
             </InfoContent>
           </InfoCard>
 
-          <InfoCard $type="lunch" $delay="0.55s">
+          <InfoCard $type="lunch" $delay="0.55s" $visible={visible}>
             <InfoTop>
               <InfoNumber>04</InfoNumber>
 
-              <InfoIcon>◌</InfoIcon>
+              <InfoIcon aria-hidden="true">◌</InfoIcon>
             </InfoTop>
 
             <InfoContent>
@@ -199,11 +198,9 @@ export default function Sessions() {
             </InfoContent>
           </InfoCard>
 
-          <InfoCard $type="both" $delay="0.7s">
+          <InfoCard $type="both" $delay="0.7s" $visible={visible}>
             <InfoTop>
               <InfoNumber>05</InfoNumber>
-
-              <MiniArrow>↗</MiniArrow>
             </InfoTop>
 
             <BothContent>
@@ -221,8 +218,8 @@ export default function Sessions() {
             </BothContent>
           </InfoCard>
 
-          <QuoteCard $delay="0.85s">
-            <QuoteMark>“</QuoteMark>
+          <QuoteCard $delay="0.85s" $visible={visible}>
+            <QuoteMark aria-hidden="true">“</QuoteMark>
 
             <QuoteText>
               What changes when reporting becomes connected, intelligent and
@@ -247,8 +244,6 @@ export default function Sessions() {
               Morning workshop places are by invitation. Afternoon nominations
               are subject to seat availability.
             </BottomText>
-
-            <BottomArrow>↓</BottomArrow>
           </BottomContent>
         </BottomNote>
       </Container>
@@ -256,9 +251,7 @@ export default function Sessions() {
   );
 }
 
-const Section = styled.section<{
-  $visible: boolean;
-}>`
+const Section = styled.section<{ $visible: boolean }>`
   width: 100%;
   padding: 110px 7vw 120px;
   background: #ffffff;
@@ -296,7 +289,7 @@ const HeaderLeft = styled.div`
 const Eyebrow = styled.span`
   display: block;
   margin-bottom: 20px;
-  color: #8a8a8f;
+  color: #555555;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -312,7 +305,7 @@ const Heading = styled.h2`
   letter-spacing: -0.075em;
 
   span {
-    color: #a8a8ad;
+    color: #555555;
   }
 
   @media (max-width: 600px) {
@@ -333,7 +326,7 @@ const HeaderRight = styled.div`
 const Number = styled.span`
   display: block;
   margin-bottom: 16px;
-  color: #b8954a;
+  color: #8a6828;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -341,7 +334,7 @@ const Number = styled.span`
 
 const HeaderText = styled.p`
   margin: 0;
-  color: #68686d;
+  color: #555555;
   font-size: 12px;
   font-weight: 450;
   line-height: 1.7;
@@ -350,17 +343,8 @@ const HeaderText = styled.p`
 
 const Bento = styled.div`
   display: grid;
-
-  grid-template-columns:
-    1.2fr
-    0.8fr
-    0.65fr;
-
-  grid-template-rows:
-    270px
-    180px
-    180px;
-
+  grid-template-columns: 1.2fr 0.8fr 0.65fr;
+  grid-template-rows: 270px 180px 180px;
   gap: 12px;
 
   grid-template-areas:
@@ -370,11 +354,7 @@ const Bento = styled.div`
 
   @media (max-width: 1000px) {
     grid-template-columns: 1fr 1fr;
-
-    grid-template-rows:
-      380px
-      190px
-      190px;
+    grid-template-rows: 380px 190px 190px;
 
     grid-template-areas:
       "morning afternoon"
@@ -392,14 +372,13 @@ const Bento = styled.div`
 const SessionCard = styled.article<{
   $theme: "gold" | "navy";
   $delay: string;
+  $visible: boolean;
 }>`
   position: relative;
-
   grid-area: ${({ $theme }) => ($theme === "gold" ? "morning" : "afternoon")};
 
   min-width: 0;
   min-height: 0;
-
   padding: 26px;
 
   display: flex;
@@ -407,7 +386,6 @@ const SessionCard = styled.article<{
   justify-content: space-between;
 
   overflow: hidden;
-
   border-radius: 28px;
 
   color: ${({ $theme }) => ($theme === "gold" ? "#111111" : "#ffffff")};
@@ -443,7 +421,10 @@ const SessionCard = styled.article<{
 
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
 
-  animation: ${reveal} 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+
+  animation: ${({ $visible }) => ($visible ? reveal : "none")} 1.2s
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
   animation-delay: ${({ $delay }) => $delay};
 
@@ -454,12 +435,9 @@ const SessionCard = styled.article<{
 
   &::after {
     content: "";
-
     position: absolute;
-
     top: -30%;
     left: -80%;
-
     width: 45%;
     height: 170%;
 
@@ -471,7 +449,6 @@ const SessionCard = styled.article<{
     );
 
     transform: rotate(18deg);
-
     pointer-events: none;
   }
 
@@ -481,7 +458,6 @@ const SessionCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px) scale(1.004);
-
     box-shadow: 0 28px 70px rgba(0, 0, 0, 0.14);
   }
 
@@ -490,26 +466,40 @@ const SessionCard = styled.article<{
     padding: 23px;
     border-radius: 24px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:hover::after {
+      animation: none;
+    }
+  }
 `;
 
 const CardGlow = styled.div`
   position: absolute;
-
   width: 320px;
   height: 320px;
-
   right: -160px;
   bottom: -160px;
 
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.08);
 
   filter: blur(8px);
-
   pointer-events: none;
 
   animation: ${glow} 7s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const CardTop = styled.div`
@@ -517,11 +507,8 @@ const CardTop = styled.div`
   z-index: 3;
 
   display: grid;
-
   grid-template-columns: auto 1fr auto;
-
   align-items: center;
-
   gap: 16px;
 
   padding-bottom: 17px;
@@ -533,7 +520,7 @@ const CardNumber = styled.span`
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  opacity: 0.55;
+  opacity: 0.78;
 `;
 
 const CardLabel = styled.span`
@@ -546,7 +533,7 @@ const CardTime = styled.span`
   font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  opacity: 0.85;
+  opacity: 0.95;
   white-space: nowrap;
 
   @media (max-width: 700px) {
@@ -560,30 +547,25 @@ const CardContent = styled.div`
 
   margin-top: auto;
   margin-bottom: auto;
-
   padding: 25px 0;
 `;
 
 const SmallHeading = styled.span`
   display: block;
-
   margin-bottom: 11px;
 
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.17em;
-  opacity: 0.52;
+  opacity: 0.75;
 `;
 
 const CardTitle = styled.h3`
   margin: 0 0 20px;
 
   font-size: clamp(42px, 4.5vw, 68px);
-
   font-weight: 600;
-
   line-height: 0.88;
-
   letter-spacing: -0.075em;
 
   @media (max-width: 700px) {
@@ -593,18 +575,13 @@ const CardTitle = styled.h3`
 
 const CardDescription = styled.p`
   max-width: 450px;
-
   margin: 0;
 
   font-size: 11px;
-
   font-weight: 450;
-
   line-height: 1.65;
-
   letter-spacing: -0.01em;
-
-  opacity: 0.7;
+  opacity: 0.9;
 `;
 
 const CardBottom = styled.div`
@@ -612,11 +589,8 @@ const CardBottom = styled.div`
   z-index: 3;
 
   display: flex;
-
   align-items: flex-end;
-
   justify-content: space-between;
-
   gap: 20px;
 
   padding-top: 17px;
@@ -625,86 +599,44 @@ const CardBottom = styled.div`
 `;
 
 const Audience = styled.div`
-  max-width: 280px;
+  max-width: 360px;
 `;
 
 const MetaLabel = styled.span`
   display: block;
-
   margin-bottom: 6px;
 
   font-size: 7px;
-
   font-weight: 700;
-
   letter-spacing: 0.16em;
-
-  opacity: 0.5;
+  opacity: 0.78;
 `;
 
 const MetaText = styled.span`
   display: block;
 
   font-size: 9px;
-
   font-weight: 500;
-
-  line-height: 1.45;
-
-  opacity: 0.78;
-`;
-
-const CircleArrow = styled.span`
-  flex-shrink: 0;
-
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.25);
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.1);
-
-  font-size: 15px;
-
-  backdrop-filter: blur(14px);
-
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.3s ease;
-
-  ${SessionCard}:hover & {
-    transform: translate(3px, -3px) scale(1.08);
-
-    background: rgba(255, 255, 255, 0.2);
-  }
+  line-height: 1.5;
+  opacity: 0.95;
 `;
 
 const InfoCard = styled.article<{
   $type: "breakfast" | "lunch" | "both";
   $delay: string;
+  $visible: boolean;
 }>`
   position: relative;
-
   grid-area: ${({ $type }) => $type};
 
   min-width: 0;
-
   padding: 21px;
 
   display: flex;
-
   flex-direction: column;
-
   justify-content: space-between;
 
   overflow: hidden;
-
   border-radius: 24px;
 
   color: #111111;
@@ -742,7 +674,10 @@ const InfoCard = styled.article<{
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9),
     0 10px 30px rgba(0, 0, 0, 0.05);
 
-  animation: ${reveal} 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+
+  animation: ${({ $visible }) => ($visible ? reveal : "none")} 1.2s
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
   animation-delay: ${({ $delay }) => $delay};
 
@@ -771,7 +706,6 @@ const InfoCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px);
-
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.09);
   }
 
@@ -783,27 +717,35 @@ const InfoCard = styled.article<{
     min-height: 190px;
     border-radius: 22px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:hover::before {
+      transform: none;
+    }
+  }
 `;
 
 const InfoTop = styled.div`
   position: relative;
-
   z-index: 2;
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 `;
 
 const InfoNumber = styled.span`
-  color: #96969b;
-
+  color: #666666;
   font-size: 8px;
-
   font-weight: 700;
-
   letter-spacing: 0.12em;
 `;
 
@@ -812,15 +754,13 @@ const InfoIcon = styled.span`
   height: 32px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
 
   background: rgba(255, 255, 255, 0.65);
-
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 17px;
 `;
@@ -832,15 +772,12 @@ const InfoContent = styled.div`
 
 const InfoLabel = styled.span`
   display: block;
-
   margin-bottom: 7px;
 
-  color: #85858a;
+  color: #666666;
 
   font-size: 7px;
-
   font-weight: 700;
-
   letter-spacing: 0.15em;
 `;
 
@@ -850,46 +787,22 @@ const InfoTitle = styled.h4`
   color: #111111;
 
   font-size: clamp(28px, 2.7vw, 40px);
-
   font-weight: 600;
-
   line-height: 0.9;
-
   letter-spacing: -0.065em;
 `;
 
 const InfoTime = styled.span`
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 11px;
-
   font-weight: 600;
-
   letter-spacing: -0.01em;
 `;
 
 const BothContent = styled.div`
   position: relative;
-
   z-index: 2;
-`;
-
-const MiniArrow = styled.span`
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #111111;
-
-  color: #ffffff;
-
-  font-size: 13px;
 `;
 
 const BothTitle = styled.h4`
@@ -898,54 +811,48 @@ const BothTitle = styled.h4`
   color: #111111;
 
   font-size: clamp(36px, 3.5vw, 52px);
-
   font-weight: 600;
-
   line-height: 0.84;
-
   letter-spacing: -0.07em;
 `;
 
 const BothText = styled.p`
   max-width: 200px;
-
   margin: 0;
 
-  color: #66666b;
+  color: #555555;
 
   font-size: 9px;
-
   line-height: 1.5;
 `;
 
 const QuoteCard = styled.article<{
   $delay: string;
+  $visible: boolean;
 }>`
   grid-area: quote;
 
   position: relative;
 
   min-width: 0;
-
   padding: 21px;
 
   display: flex;
-
   flex-direction: column;
-
   justify-content: space-between;
 
   overflow: hidden;
-
   border-radius: 24px;
 
   background: #111111;
-
   color: #ffffff;
 
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
 
-  animation: ${reveal} 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+
+  animation: ${({ $visible }) => ($visible ? reveal : "none")} 1.2s
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
   animation-delay: ${({ $delay }) => $delay};
 
@@ -954,66 +861,62 @@ const QuoteCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px);
-
     box-shadow: 0 22px 55px rgba(0, 0, 0, 0.15);
   }
 
   @media (max-width: 700px) {
     min-height: 190px;
-
     border-radius: 22px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
 const QuoteMark = styled.span`
-  color: #b8954a;
+  color: #c5a45e;
 
   font-size: 42px;
-
   font-weight: 500;
-
   line-height: 0.5;
 `;
 
 const QuoteText = styled.p`
   max-width: 250px;
-
   margin: 0;
 
-  color: rgba(255, 255, 255, 0.9);
+  color: #f1f1f1;
 
   font-size: 16px;
-
   font-weight: 500;
-
   line-height: 1.2;
-
   letter-spacing: -0.04em;
 `;
 
 const QuoteBottom = styled.div`
   display: flex;
-
   align-items: center;
-
   gap: 10px;
 `;
 
 const QuoteLine = styled.span`
   width: 20px;
-
   height: 1px;
-
-  background: #b8954a;
+  background: #c5a45e;
 `;
 
 const QuoteLabel = styled.span`
-  color: rgba(255, 255, 255, 0.45);
+  color: #c8c8c8;
 
   font-size: 7px;
-
   font-weight: 700;
-
   letter-spacing: 0.15em;
 `;
 
@@ -1027,74 +930,37 @@ const BottomNote = styled.div`
 
 const BottomLine = styled.div`
   width: 100%;
-
   height: 1px;
-
   background: #e5e5e5;
 `;
 
 const BottomContent = styled.div`
   display: grid;
-
-  grid-template-columns:
-    90px
-    1fr
-    auto;
-
+  grid-template-columns: 90px 1fr;
   align-items: center;
-
   gap: 25px;
-
   padding-top: 18px;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr auto;
-
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 `;
 
 const BottomNumber = styled.span`
-  color: #b8954a;
+  color: #8a6828;
 
   font-size: 8px;
-
   font-weight: 700;
-
   letter-spacing: 0.12em;
 `;
 
 const BottomText = styled.p`
   margin: 0;
 
-  color: #77777c;
+  color: #555555;
 
   font-size: 9px;
-
   font-weight: 500;
-
   line-height: 1.5;
-
-  @media (max-width: 600px) {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
-`;
-
-const BottomArrow = styled.span`
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #dedede;
-
-  border-radius: 50%;
-
-  color: #111111;
-
-  font-size: 12px;
 `;

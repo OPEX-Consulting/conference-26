@@ -1,9 +1,24 @@
 :root {
   --background: #ffffff;
   --foreground: #111111;
-  --muted: #6e6e73;
+
+  /* Accessible text colors */
+  --muted: #555555;
+  --muted-light: #666666;
+
+  /* Borders */
   --border: #e5e5e5;
-  --gold: #b8954a;
+
+  /* Accessible gold for text on light backgrounds */
+  --gold: #8a6828;
+
+  /* Gold for dark backgrounds / decorative use */
+  --gold-light: #c5a45e;
+
+  /* Dark surfaces */
+  --dark: #090909;
+  --dark-text: #ffffff;
+  --dark-muted: #c8c8c8;
 }
 
 html {
@@ -52,4 +67,9 @@ button {
 ::selection {
   background: #111111;
   color: #ffffff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }

@@ -1,19 +1,16 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-
 import Navbar from "./Navbar.component";
+
+const RESERVATION_URL = "https://workshop.opexconsult.com/";
 
 export default function Hero() {
   const [qrOpen, setQrOpen] = useState(false);
 
   useEffect(() => {
-    if (qrOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = qrOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
@@ -39,7 +36,15 @@ export default function Hero() {
       <Navbar />
 
       <HeroComponent>
-        <BackgroundImage />
+        <BackgroundImage
+          src="/images/main.jpeg"
+          alt=""
+          fill
+          priority
+          quality={75}
+          sizes="100vw"
+        />
+
         <Overlay />
 
         <HeroContent>
@@ -74,7 +79,7 @@ export default function Hero() {
 
           <Actions>
             <PrimaryButton
-              href="https://workshop.opexconsult.com/"
+              href={RESERVATION_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -86,17 +91,20 @@ export default function Hero() {
           </Actions>
         </HeroContent>
 
-        <BottomLeft>
-          <SmallText>OPEX CONSULTING LTD</SmallText>
-        </BottomLeft>
-
         <QRCodeCard
           type="button"
           onClick={() => setQrOpen(true)}
           aria-label="Open reservation QR code"
         >
           <QRGlow />
-          <QRImage src="/images/qrcode.png" alt="Scan to reserve your seat" />
+
+          <QRImage
+            src="/images/qrcode.png"
+            alt="Scan to reserve your seat"
+            width={72}
+            height={72}
+          />
+
           <QRText>SCAN TO RESERVE</QRText>
         </QRCodeCard>
       </HeroComponent>
@@ -118,6 +126,8 @@ export default function Hero() {
               <CloseLine />
             </CloseButton>
 
+            <ModalEyebrow>OPEX EXECUTIVE WORKSHOP & SUMMIT 2026</ModalEyebrow>
+
             <ModalTitle>
               Reserve
               <br />
@@ -133,13 +143,15 @@ export default function Hero() {
               <LargeQR
                 src="/images/qrcode.png"
                 alt="QR code to reserve your seat"
+                width={181}
+                height={181}
               />
             </LargeQRWrapper>
 
             <ModalHint>SCAN WITH YOUR PHONE CAMERA</ModalHint>
 
             <ModalLink
-              href="https://workshop.opexconsult.com/"
+              href={RESERVATION_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -240,54 +252,49 @@ const qrGlowAnimation = keyframes`
 
 const Container = styled.main`
   position: relative;
-
   width: 100%;
   min-height: 100vh;
-
   background: #000000;
 `;
 
 const HeroComponent = styled.section`
   position: relative;
-
   min-height: 100vh;
   width: 100%;
-
   display: flex;
   align-items: center;
-
   overflow: hidden;
-
   background: #050505;
 `;
 
-const BackgroundImage = styled.div`
-  position: absolute;
+const BackgroundImage = styled(Image)`
+  position: absolute !important;
   inset: 0;
-
-  background-image: url("/images/main.jpeg");
-  background-size: cover;
-  background-position: center;
-
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   transform: scale(1.01);
 `;
 
 const Overlay = styled.div`
   position: absolute;
   inset: 0;
+  z-index: 1;
 
   background: linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.86) 0%,
-      rgba(0, 0, 0, 0.68) 35%,
-      rgba(0, 0, 0, 0.3) 70%,
-      rgba(0, 0, 0, 0.48) 100%
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.76) 35%,
+      rgba(0, 0, 0, 0.42) 70%,
+      rgba(0, 0, 0, 0.56) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.38) 0%,
       rgba(0, 0, 0, 0) 45%,
-      rgba(0, 0, 0, 0.58) 100%
+      rgba(0, 0, 0, 0.68) 100%
     );
 `;
 
@@ -296,7 +303,6 @@ const HeroContent = styled.div`
   z-index: 2;
 
   width: min(900px, 90vw);
-
   margin-left: clamp(30px, 8vw, 130px);
   padding-top: 100px;
 
@@ -311,6 +317,7 @@ const HeroContent = styled.div`
 
 const Headline = styled.h1`
   margin: 0;
+  color: #ffffff;
 
   font-size: clamp(64px, 9vw, 138px);
   line-height: 0.86;
@@ -321,16 +328,14 @@ const Headline = styled.h1`
 `;
 
 const Accent = styled.span`
-  color: #d0ad65;
+  color: #d8b66f;
 `;
 
 const Subheadline = styled.p`
   max-width: 590px;
-
   margin-top: 36px;
 
-  color: rgba(255, 255, 255, 0.88);
-
+  color: #f1f1f1;
   font-size: clamp(16px, 1.5vw, 21px);
   line-height: 1.4;
   letter-spacing: -0.025em;
@@ -344,11 +349,9 @@ const Subheadline = styled.p`
 
 const ValueText = styled.p`
   max-width: 520px;
-
   margin-top: 18px;
 
-  color: rgba(255, 255, 255, 0.58);
-
+  color: #d0d0d0;
   font-size: 12px;
   line-height: 1.65;
   letter-spacing: -0.01em;
@@ -361,7 +364,6 @@ const ValueText = styled.p`
 const EventDetails = styled.div`
   display: flex;
   gap: 48px;
-
   margin-top: 34px;
 
   @media (max-width: 600px) {
@@ -377,16 +379,14 @@ const Detail = styled.div`
 `;
 
 const DetailLabel = styled.span`
-  color: #d0ad65;
-
+  color: #d8b66f;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
 `;
 
 const DetailValue = styled.span`
-  color: rgba(255, 255, 255, 0.9);
-
+  color: #f5f5f5;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -396,7 +396,6 @@ const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin-top: 36px;
 
   @media (max-width: 600px) {
@@ -412,7 +411,6 @@ const PrimaryButton = styled.a`
   gap: 12px;
 
   min-height: 48px;
-
   padding: 0 22px;
 
   border-radius: 100px;
@@ -423,14 +421,27 @@ const PrimaryButton = styled.a`
   font-size: 11px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  text-decoration: none;
 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-3px);
-
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25),
       0 0 0 1px rgba(255, 255, 255, 0.25);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -440,15 +451,15 @@ const SecondaryButton = styled.a`
   justify-content: center;
 
   min-height: 48px;
-
   padding: 0 20px;
 
   border-radius: 100px;
 
-  color: rgba(255, 255, 255, 0.75);
+  color: #eeeeee;
 
   font-size: 11px;
   font-weight: 500;
+  text-decoration: none;
 
   transition: color 0.25s ease, transform 0.25s ease;
 
@@ -456,37 +467,32 @@ const SecondaryButton = styled.a`
     color: #ffffff;
     transform: translateY(-2px);
   }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const Arrow = styled.span`
   font-size: 16px;
-
   transition: transform 0.25s ease;
 
   ${PrimaryButton}:hover & {
     transform: translate(3px, -3px);
   }
-`;
 
-const BottomLeft = styled.div`
-  position: absolute;
-  z-index: 3;
-
-  left: clamp(30px, 8vw, 130px);
-  bottom: 34px;
-
-  @media (max-width: 700px) {
-    left: 20px;
-    bottom: 24px;
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
-`;
-
-const SmallText = styled.span`
-  color: rgba(255, 255, 255, 0.48);
-
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
 `;
 
 /* =========================================
@@ -515,7 +521,7 @@ const QRCodeCard = styled.button`
   border: 0;
   border-radius: 18px;
 
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
 
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(255, 255, 255, 0.2);
@@ -526,11 +532,15 @@ const QRCodeCard = styled.button`
 
   &:hover {
     animation-play-state: paused;
-
     transform: translateY(-5px) scale(1.04);
 
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.32),
       0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 5px;
   }
 
   @media (max-width: 600px) {
@@ -541,23 +551,30 @@ const QRCodeCard = styled.button`
     height: 88px;
 
     padding: 8px;
-
     border-radius: 14px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
 const QRGlow = styled.div`
   position: absolute;
   inset: -10px;
-
   z-index: -1;
 
   border-radius: 24px;
 
   background: radial-gradient(
     circle,
-    rgba(208, 173, 101, 0.38) 0%,
-    rgba(208, 173, 101, 0) 70%
+    rgba(216, 182, 111, 0.38) 0%,
+    rgba(216, 182, 111, 0) 70%
   );
 
   filter: blur(8px);
@@ -565,9 +582,14 @@ const QRGlow = styled.div`
   animation: ${qrGlowAnimation} 3s ease-in-out infinite;
 
   pointer-events: none;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 0.4;
+  }
 `;
 
-const QRImage = styled.img`
+const QRImage = styled(Image)`
   position: relative;
   z-index: 1;
 
@@ -606,7 +628,6 @@ const QRText = styled.span`
 const QRModalOverlay = styled.div`
   position: fixed;
   inset: 0;
-
   z-index: 9999;
 
   display: flex;
@@ -615,12 +636,16 @@ const QRModalOverlay = styled.div`
 
   padding: 20px;
 
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.78);
 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   animation: ${fadeIn} 0.25s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const QRModal = styled.div`
@@ -643,16 +668,17 @@ const QRModal = styled.div`
 
   @media (max-width: 600px) {
     width: min(350px, 100%);
-
     padding: 30px 22px 24px;
-
     border-radius: 22px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-
   top: 16px;
   right: 16px;
 
@@ -666,15 +692,26 @@ const CloseButton = styled.button`
   cursor: pointer;
 
   border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.12);
 
   transition: background 0.25s ease, transform 0.25s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.13);
-
+    background: rgba(255, 255, 255, 0.18);
     transform: rotate(90deg);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -697,15 +734,14 @@ const CloseLine = styled.span`
 
 const ModalEyebrow = styled.div`
   margin-bottom: 14px;
+  padding-right: 35px;
 
-  color: #d0ad65;
+  color: #d8b66f;
 
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-
-  padding-right: 35px;
 `;
 
 const ModalTitle = styled.h2`
@@ -720,7 +756,7 @@ const ModalTitle = styled.h2`
 `;
 
 const ModalAccent = styled.span`
-  color: #d0ad65;
+  color: #d8b66f;
 `;
 
 const ModalDescription = styled.p`
@@ -728,7 +764,7 @@ const ModalDescription = styled.p`
 
   margin: 18px 0 24px;
 
-  color: #8e8e93;
+  color: #c8c8c8;
 
   font-size: 11px;
   line-height: 1.6;
@@ -746,11 +782,9 @@ const LargeQRWrapper = styled.div`
   height: 205px;
 
   margin: 0 auto 18px;
-
   padding: 12px;
 
   border-radius: 18px;
-
   background: #ffffff;
 
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -761,7 +795,7 @@ const LargeQRWrapper = styled.div`
   }
 `;
 
-const LargeQR = styled.img`
+const LargeQR = styled(Image)`
   display: block;
 
   width: 100%;
@@ -773,7 +807,7 @@ const LargeQR = styled.img`
 const ModalHint = styled.div`
   margin-bottom: 20px;
 
-  color: #666666;
+  color: #a8a8a8;
 
   font-size: 8px;
   font-weight: 700;
@@ -798,13 +832,26 @@ const ModalLink = styled.a`
   font-size: 11px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  text-decoration: none;
 
   transition: transform 0.25s ease, background 0.25s ease;
 
   &:hover {
     transform: translateY(-2px);
-
     background: #f1f1f1;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #d8b66f;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -815,5 +862,9 @@ const ModalArrow = styled.span`
 
   ${ModalLink}:hover & {
     transform: translate(2px, -2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;

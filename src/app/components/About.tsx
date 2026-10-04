@@ -204,8 +204,6 @@ function InteractiveCard({
 
       <CardTop>
         <CardNumber>{number}</CardNumber>
-
-        <CardArrow>↗</CardArrow>
       </CardTop>
 
       <CardBottom>
@@ -219,8 +217,11 @@ function InteractiveCard({
 
 const Section = styled.section`
   width: 100%;
+
   background: #ffffff;
+
   padding: 120px 7vw 130px;
+
   overflow: hidden;
 
   @media (max-width: 768px) {
@@ -230,15 +231,21 @@ const Section = styled.section`
 
 const Container = styled.div`
   width: 100%;
+
   max-width: 1280px;
+
   margin: 0 auto;
+
   min-width: 0;
 `;
 
 const Header = styled.div`
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   margin-bottom: 65px;
 
   @media (max-width: 768px) {
@@ -247,17 +254,23 @@ const Header = styled.div`
 `;
 
 const SectionLabel = styled.span`
-  color: #8a8a8f;
+  color: #555555;
+
   font-size: 9px;
+
   font-weight: 700;
+
   letter-spacing: 0.16em;
+
   text-transform: uppercase;
 `;
 
 const SectionNumber = styled.span`
-  color: #b5b5b5;
+  color: #666666;
+
   font-size: 10px;
-  font-weight: 500;
+
+  font-weight: 600;
 `;
 
 const StatementArea = styled.div`
@@ -275,12 +288,14 @@ const StatementArea = styled.div`
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+
     gap: 50px;
   }
 `;
 
 const Intro = styled.div`
   width: 100%;
+
   max-width: 300px;
 
   align-self: end;
@@ -289,18 +304,21 @@ const Intro = styled.div`
 
   @media (max-width: 900px) {
     order: 2;
+
     max-width: 620px;
+
     padding-bottom: 0;
   }
 `;
 
 const IntroLine = styled.div`
   width: 100%;
+
   height: 1px;
 
   margin-bottom: 18px;
 
-  background: #e5e5e7;
+  background: #d9d9d9;
 `;
 
 const IntroNumber = styled.span`
@@ -308,9 +326,10 @@ const IntroNumber = styled.span`
 
   margin-bottom: 22px;
 
-  color: #a0a0a5;
+  color: #666666;
 
   font-size: 9px;
+
   font-weight: 600;
 
   letter-spacing: 0.08em;
@@ -319,12 +338,14 @@ const IntroNumber = styled.span`
 const IntroText = styled.p`
   margin: 0 0 16px;
 
-  color: #6e6e73;
+  color: #555555;
 
   font-size: 12px;
+
   font-weight: 450;
 
   line-height: 1.7;
+
   letter-spacing: -0.015em;
 
   &:last-child {
@@ -334,11 +355,12 @@ const IntroText = styled.p`
 
 const HeroStatement = styled.h2`
   width: 100%;
+
   max-width: 1050px;
 
   margin: 0;
 
-  color: #d8d8da;
+  color: #111111;
 
   font-size: clamp(48px, 6.8vw, 104px);
 
@@ -371,16 +393,15 @@ const HeroStatement = styled.h2`
   }
 `;
 
-const Word = styled.span<{
-  $progress: number;
-}>`
+const Word = styled.span<{ $progress: number }>`
   display: inline-block;
 
   margin-right: 0.2em;
+
   margin-bottom: 0.08em;
 
   color: ${({ $progress }) => {
-    const light = 215;
+    const light = 170;
     const dark = 17;
 
     const value = Math.round(light - (light - dark) * $progress);
@@ -390,8 +411,8 @@ const Word = styled.span<{
 
   text-shadow: ${({ $progress }) =>
     $progress > 0.05 && $progress < 1
-      ? `0 0 24px rgba(184, 149, 74, ${
-          0.16 * (1 - Math.abs(0.5 - $progress) * 2)
+      ? `0 0 24px rgba(138, 104, 40, ${
+          0.14 * (1 - Math.abs(0.5 - $progress) * 2)
         })`
       : "none"};
 
@@ -399,6 +420,10 @@ const Word = styled.span<{
 
   &:last-child {
     margin-right: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
@@ -534,15 +559,23 @@ const Card = styled.div<{
 
     border-radius: 24px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    transform: none !important;
+  }
 `;
 
 const CardGlow = styled.div`
   position: absolute;
 
   width: 260px;
+
   height: 260px;
 
   right: -100px;
+
   top: -110px;
 
   border-radius: 50%;
@@ -557,6 +590,10 @@ const CardGlow = styled.div`
 
   ${Card}:hover & {
     transform: scale(1.35) translate(-15px, 20px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
@@ -579,48 +616,7 @@ const CardNumber = styled.span`
 
   letter-spacing: 0.12em;
 
-  opacity: 0.58;
-`;
-
-const CardArrow = styled.span`
-  position: relative;
-
-  z-index: 3;
-
-  width: 42px;
-
-  height: 42px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.22);
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.14);
-
-  color: inherit;
-
-  font-size: 17px;
-
-  backdrop-filter: blur(12px);
-
-  -webkit-backdrop-filter: blur(12px);
-
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.3s ease, box-shadow 0.3s ease;
-
-  ${Card}:hover & {
-    transform: translate(3px, -3px) scale(1.06);
-
-    background: rgba(255, 255, 255, 0.25);
-
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  }
+  opacity: 0.72;
 `;
 
 const CardBottom = styled.div`
@@ -661,6 +657,10 @@ const CardTitle = styled.h3`
   @media (max-width: 480px) {
     font-size: 32px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const CardText = styled.p`
@@ -678,7 +678,7 @@ const CardText = styled.p`
 
   letter-spacing: -0.012em;
 
-  opacity: 0.68;
+  opacity: 0.78;
 
   @media (max-width: 480px) {
     font-size: 11px;
@@ -692,7 +692,7 @@ const FooterStatement = styled.div`
 
   padding-top: 26px;
 
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #d9d9d9;
 
   @media (max-width: 768px) {
     margin-top: 80px;
@@ -704,7 +704,7 @@ const SmallText = styled.span`
 
   margin-bottom: 20px;
 
-  color: #8a8a8f;
+  color: #555555;
 
   font-size: 9px;
 
@@ -731,7 +731,7 @@ const LargeText = styled.h3`
   letter-spacing: -0.07em;
 
   span {
-    color: #a0a0a5;
+    color: #555555;
   }
 
   @media (max-width: 768px) {

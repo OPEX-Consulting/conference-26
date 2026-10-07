@@ -172,7 +172,6 @@ export default function Hero({ onReserve }: HeroProps) {
           <Actions>
             <PrimaryButton type="button" onClick={onReserve}>
               Reserve your seat
-              <Arrow>↗</Arrow>
             </PrimaryButton>
 
             <SecondaryButton href="#agenda">View the agenda</SecondaryButton>

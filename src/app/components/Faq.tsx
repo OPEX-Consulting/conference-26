@@ -113,10 +113,7 @@ export default function Faq() {
         <Bottom>
           <BottomText>Still have a question?</BottomText>
 
-          <Contact href="mailto:info@opexconsult.co.uk">
-            Contact OPEX
-            <Arrow aria-hidden="true">↗</Arrow>
-          </Contact>
+          <Contact href="mailto:info@opexconsult.co.uk">Contact OPEX</Contact>
         </Bottom>
       </Container>
     </Section>

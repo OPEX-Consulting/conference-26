@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
@@ -148,11 +147,10 @@ const Left = styled.div`
 const Eyebrow = styled.span`
   display: block;
   margin-bottom: 20px;
-
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 
@@ -163,11 +161,10 @@ const Eyebrow = styled.span`
 
 const Heading = styled.h2`
   margin: 0;
-
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(48px, 5.7vw, 78px);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.07em;
 
@@ -178,7 +175,7 @@ const Heading = styled.h2`
 `;
 
 const Accent = styled.span`
-  color: #8a6828;
+  color: #0067d4;
 `;
 
 const Right = styled.div`
@@ -192,11 +189,10 @@ const Right = styled.div`
 const Description = styled.p`
   max-width: 430px;
   margin: 0;
-
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 200;
   line-height: 1.7;
   letter-spacing: -0.015em;
 
@@ -210,7 +206,6 @@ const LogoGrid = styled.div<{ $visible: boolean }>`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 
   animation: ${({ $visible }) => ($visible ? reveal : "none")} 0.9s
@@ -233,18 +228,13 @@ const LogoGrid = styled.div<{ $visible: boolean }>`
 
 const LogoCard = styled.div<{ $delay: string }>`
   position: relative;
-
   height: 165px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 30px;
-
-  border: 1px solid #eeeeee;
+  border: 1px solid #c6e3fb;
   border-radius: 18px;
-
   background: #ffffff;
   overflow: visible;
 
@@ -256,13 +246,11 @@ const LogoCard = styled.div<{ $delay: string }>`
 
   &:hover {
     z-index: 5;
-
-    background: #fafafa;
-    border-color: #e5e5e5;
-
+    background: #f7faff;
+    border-color: #0067d4;
     transform: translateY(-5px);
-
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 24px 50px rgba(8, 54, 114, 0.08),
+      0 6px 18px rgba(8, 54, 114, 0.04);
   }
 
   @media (max-width: 700px) {
@@ -285,12 +273,10 @@ const Logo = styled(Image)`
   width: auto;
   max-width: 220px;
   height: 70px;
-
   object-fit: contain;
 
   filter: grayscale(1);
   opacity: 0.55;
-
   transform: scale(1);
 
   transition: filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),

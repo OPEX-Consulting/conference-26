@@ -57,7 +57,6 @@ export default function Result() {
 
                 <CardContent>
                   <CardTitle>{outcome.title}</CardTitle>
-
                   <CardText>{outcome.text}</CardText>
                 </CardContent>
               </CardLeft>
@@ -115,9 +114,10 @@ const Header = styled.div`
 
 const Eyebrow = styled.div`
   margin-bottom: 16px;
-  color: #8a6828;
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 `;
@@ -125,14 +125,15 @@ const Eyebrow = styled.div`
 const Heading = styled.h2`
   max-width: 760px;
   margin: 0;
-  color: #111111;
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(46px, 6vw, 76px);
   line-height: 0.92;
   letter-spacing: -0.065em;
-  font-weight: 600;
+  font-weight: 400;
 
   span {
-    color: #555555;
+    color: #0067d4;
   }
 
   @media (max-width: 700px) {
@@ -143,11 +144,12 @@ const Heading = styled.h2`
 const Description = styled.p`
   max-width: 420px;
   margin: 0;
-  color: #4f4f52;
+  color: #555555;
+  font-family: "Mont", sans-serif;
   font-size: 14px;
   line-height: 1.7;
   letter-spacing: -0.015em;
-  font-weight: 400;
+  font-weight: 200;
 
   @media (max-width: 700px) {
     max-width: 100%;
@@ -170,30 +172,26 @@ const Stack = styled.div`
 const Card = styled.article`
   position: relative;
   z-index: 1;
-
   min-height: 150px;
   display: flex;
   align-items: center;
-
   padding: 28px 34px;
   margin-bottom: 12px;
-
-  background: #f7f7f5;
-  border: 1px solid #e2e2df;
+  background: #f7faff;
+  border: 1px solid #c6e3fb;
   border-radius: 24px;
-
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025), 0 12px 30px rgba(0, 0, 0, 0.018);
-
+  box-shadow: 0 2px 8px rgba(8, 54, 114, 0.025),
+    0 12px 30px rgba(8, 54, 114, 0.018);
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.5s ease, border-color 0.5s ease,
     box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     background: #ffffff;
-    border-color: #d4d4d0;
+    border-color: #0067d4;
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.045),
-      0 24px 60px rgba(0, 0, 0, 0.055);
+    box-shadow: 0 8px 20px rgba(8, 54, 114, 0.045),
+      0 24px 60px rgba(8, 54, 114, 0.055);
   }
 
   &:active {
@@ -233,28 +231,24 @@ const CardLeft = styled.div`
 
 const Number = styled.div`
   flex-shrink: 0;
-
   width: 36px;
   height: 36px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-  background: #111111;
+  background: #083672;
   color: #ffffff;
-
+  font-family: "Chillen", sans-serif;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.02em;
-
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.4s ease;
 
   ${Card}:hover & {
     transform: scale(1.06);
-    background: #1c1c1c;
+    background: #0067d4;
   }
 
   @media (max-width: 700px) {
@@ -278,12 +272,12 @@ const CardContent = styled.div`
 
 const CardTitle = styled.h3`
   margin: 0;
-  color: #111111;
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(23px, 3vw, 35px);
   line-height: 1;
   letter-spacing: -0.055em;
-  font-weight: 600;
-
+  font-weight: 400;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 
   ${Card}:hover & {
@@ -302,12 +296,12 @@ const CardTitle = styled.h3`
 const CardText = styled.p`
   max-width: 560px;
   margin: 11px 0 0;
-
-  color: #555559;
+  color: #555555;
+  font-family: "Mont", sans-serif;
   font-size: 14px;
   line-height: 1.65;
   letter-spacing: -0.005em;
-  font-weight: 400;
+  font-weight: 200;
 
   @media (max-width: 700px) {
     margin-top: 9px;
@@ -321,13 +315,10 @@ const StackShadow = styled.div`
   left: 70px;
   right: 70px;
   bottom: -10px;
-
   height: 40px;
-
-  background: rgba(0, 0, 0, 0.035);
+  background: rgba(0, 103, 212, 0.06);
   border-radius: 50%;
   filter: blur(20px);
-
   z-index: 0;
   pointer-events: none;
 
@@ -342,11 +333,9 @@ const BottomStatement = styled.div`
   grid-template-columns: 0.8fr 1.2fr;
   align-items: center;
   gap: 50px;
-
   margin-top: 85px;
   padding-top: 30px;
-
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #c6e3fb;
 
   @media (max-width: 700px) {
     grid-template-columns: 1fr;
@@ -356,9 +345,10 @@ const BottomStatement = styled.div`
 `;
 
 const StatementLabel = styled.div`
-  color: #777777;
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.17em;
   text-transform: uppercase;
 `;
@@ -366,14 +356,14 @@ const StatementLabel = styled.div`
 const Statement = styled.p`
   max-width: 650px;
   margin: 0;
-
-  color: #111111;
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(22px, 3vw, 34px);
   line-height: 1.02;
   letter-spacing: -0.055em;
-  font-weight: 500;
+  font-weight: 400;
 
   span {
-    color: #555555;
+    color: #0067d4;
   }
 `;

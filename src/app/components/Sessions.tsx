@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -70,9 +71,11 @@ export default function Sessions() {
             <Eyebrow>THE PROGRAMME</Eyebrow>
 
             <Heading>
-              Two sessions.
+              <HeadingLight>Two sessions.</HeadingLight>
+
               <br />
-              <span>One conversation.</span>
+
+              <HeadingBrand>One conversation.</HeadingBrand>
             </Heading>
           </HeaderLeft>
 
@@ -88,7 +91,8 @@ export default function Sessions() {
         </Header>
 
         <Bento>
-          <SessionCard $theme="gold" $delay="0.1s" $visible={visible}>
+          {/* FINANCE */}
+          <SessionCard $theme="primary" $delay="0.1s" $visible={visible}>
             <CardGlow />
 
             <CardTop>
@@ -126,6 +130,7 @@ export default function Sessions() {
             </CardBottom>
           </SessionCard>
 
+          {/* C-LEVEL */}
           <SessionCard $theme="navy" $delay="0.25s" $visible={visible}>
             <CardGlow />
 
@@ -166,6 +171,7 @@ export default function Sessions() {
             </CardBottom>
           </SessionCard>
 
+          {/* BREAKFAST */}
           <InfoCard $type="breakfast" $delay="0.4s" $visible={visible}>
             <InfoTop>
               <InfoNumber>03</InfoNumber>
@@ -182,6 +188,7 @@ export default function Sessions() {
             </InfoContent>
           </InfoCard>
 
+          {/* LUNCH */}
           <InfoCard $type="lunch" $delay="0.55s" $visible={visible}>
             <InfoTop>
               <InfoNumber>04</InfoNumber>
@@ -198,6 +205,7 @@ export default function Sessions() {
             </InfoContent>
           </InfoCard>
 
+          {/* BOTH */}
           <InfoCard $type="both" $delay="0.7s" $visible={visible}>
             <InfoTop>
               <InfoNumber>05</InfoNumber>
@@ -218,6 +226,7 @@ export default function Sessions() {
             </BothContent>
           </InfoCard>
 
+          {/* QUOTE */}
           <QuoteCard $delay="0.85s" $visible={visible}>
             <QuoteMark aria-hidden="true">“</QuoteMark>
 
@@ -251,14 +260,26 @@ export default function Sessions() {
   );
 }
 
+/* =========================
+   SECTION
+========================= */
+
 const Section = styled.section<{ $visible: boolean }>`
   width: 100%;
   padding: 110px 7vw 120px;
   background: #ffffff;
   overflow: hidden;
 
+  @media (max-width: 1100px) {
+    padding: 95px 5vw 105px;
+  }
+
   @media (max-width: 768px) {
     padding: 80px 24px 90px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 70px 18px 80px;
   }
 `;
 
@@ -268,14 +289,23 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+/* =========================
+   HEADER
+========================= */
+
 const Header = styled.div`
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
   gap: 70px;
   align-items: end;
   margin-bottom: 60px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1050px) {
+    grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+    gap: 45px;
+  }
+
+  @media (max-width: 850px) {
     grid-template-columns: 1fr;
     gap: 30px;
     margin-bottom: 45px;
@@ -289,62 +319,120 @@ const HeaderLeft = styled.div`
 const Eyebrow = styled.span`
   display: block;
   margin-bottom: 20px;
-  color: #555555;
-  font-size: 9px;
-  font-weight: 700;
+
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
+  @media (max-width: 600px) {
+    font-size: 10px;
+    margin-bottom: 17px;
+  }
 `;
 
 const Heading = styled.h2`
   margin: 0;
-  color: #111111;
-  font-size: clamp(54px, 6.5vw, 92px);
-  font-weight: 600;
-  line-height: 0.88;
+
+  color: #083672;
+
+  font-size: clamp(54px, 6vw, 88px);
+  line-height: 0.9;
+
   letter-spacing: -0.075em;
 
-  span {
-    color: #555555;
+  @media (max-width: 1050px) {
+    font-size: clamp(52px, 7vw, 76px);
+  }
+
+  @media (max-width: 850px) {
+    font-size: clamp(50px, 9vw, 72px);
   }
 
   @media (max-width: 600px) {
-    font-size: clamp(46px, 13vw, 70px);
+    font-size: clamp(46px, 13vw, 68px);
     line-height: 0.92;
   }
 `;
 
+const HeadingLight = styled.span`
+  font-family: "Mont", sans-serif;
+  font-weight: 200;
+`;
+
+const HeadingBrand = styled.span`
+  font-family: "Chillen", sans-serif;
+  font-weight: 400;
+  color: #0067d4;
+`;
+
 const HeaderRight = styled.div`
-  max-width: 330px;
+  max-width: 390px;
   margin-left: auto;
 
-  @media (max-width: 900px) {
+  @media (max-width: 850px) {
     margin-left: 0;
+    max-width: 620px;
   }
 `;
 
 const Number = styled.span`
   display: block;
   margin-bottom: 16px;
-  color: #8a6828;
-  font-size: 10px;
-  font-weight: 700;
+
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+
   letter-spacing: 0.12em;
 `;
 
 const HeaderText = styled.p`
   margin: 0;
+
   color: #555555;
-  font-size: 12px;
-  font-weight: 450;
+
+  font-family: "Mont", sans-serif;
+  font-size: 15px;
+  font-weight: 200;
+
   line-height: 1.7;
   letter-spacing: -0.015em;
+
+  @media (max-width: 850px) {
+    max-width: 620px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    line-height: 1.65;
+  }
 `;
+
+/* =========================
+   BENTO
+========================= */
 
 const Bento = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr 0.65fr;
-  grid-template-rows: 270px 180px 180px;
+
+  grid-template-columns:
+    minmax(0, 1.2fr)
+    minmax(0, 0.8fr)
+    minmax(190px, 0.65fr);
+
+  grid-template-rows:
+    270px
+    180px
+    180px;
+
   gap: 12px;
 
   grid-template-areas:
@@ -352,74 +440,110 @@ const Bento = styled.div`
     "morning afternoon lunch"
     "morning both quote";
 
-  @media (max-width: 1000px) {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 380px 190px 190px;
+  @media (max-width: 1100px) {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    grid-template-rows:
+      360px
+      190px
+      190px
+      190px;
 
     grid-template-areas:
       "morning afternoon"
       "morning breakfast"
-      "morning lunch";
+      "morning lunch"
+      "both quote";
+
+    gap: 12px;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 850px) {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    grid-template-rows:
+      330px
+      180px
+      180px
+      180px;
+
+    grid-template-areas:
+      "morning morning"
+      "afternoon afternoon"
+      "breakfast lunch"
+      "both quote";
+  }
+
+  @media (max-width: 650px) {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 `;
 
+/* =========================
+   MAIN SESSION CARDS
+========================= */
+
 const SessionCard = styled.article<{
-  $theme: "gold" | "navy";
+  $theme: "primary" | "navy";
   $delay: string;
   $visible: boolean;
 }>`
   position: relative;
-  grid-area: ${({ $theme }) => ($theme === "gold" ? "morning" : "afternoon")};
+
+  grid-area: ${({ $theme }) =>
+    $theme === "primary" ? "morning" : "afternoon"};
 
   min-width: 0;
   min-height: 0;
-  padding: 26px;
+
+  padding: 28px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   overflow: hidden;
+
   border-radius: 28px;
 
-  color: ${({ $theme }) => ($theme === "gold" ? "#111111" : "#ffffff")};
+  color: #ffffff;
 
   background: ${({ $theme }) =>
-    $theme === "gold"
+    $theme === "primary"
       ? `
         radial-gradient(
           circle at 90% 8%,
-          rgba(255,255,255,0.4),
+          rgba(198, 227, 251, 0.25),
           transparent 28%
         ),
         linear-gradient(
           145deg,
-          #c9a45b 0%,
-          #b8954a 50%,
-          #9f7b3c 100%
+          #0067d4 0%,
+          #0759b8 50%,
+          #083672 100%
         )
       `
       : `
         radial-gradient(
           circle at 90% 8%,
-          rgba(255,255,255,0.15),
+          rgba(198, 227, 251, 0.16),
           transparent 28%
         ),
         linear-gradient(
           145deg,
-          #293957 0%,
-          #18243a 55%,
-          #0d1628 100%
+          #083672 0%,
+          #0a427e 55%,
+          #0067d4 100%
         )
       `};
 
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 45px rgba(8, 54, 114, 0.12);
 
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 
@@ -435,20 +559,23 @@ const SessionCard = styled.article<{
 
   &::after {
     content: "";
+
     position: absolute;
     top: -30%;
     left: -80%;
+
     width: 45%;
     height: 170%;
 
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.13),
       transparent
     );
 
     transform: rotate(18deg);
+
     pointer-events: none;
   }
 
@@ -458,10 +585,19 @@ const SessionCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px) scale(1.004);
-    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.14);
+
+    box-shadow: 0 28px 70px rgba(8, 54, 114, 0.2);
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 1100px) {
+    padding: 26px;
+  }
+
+  @media (max-width: 850px) {
+    min-height: 330px;
+  }
+
+  @media (max-width: 650px) {
     min-height: 430px;
     padding: 23px;
     border-radius: 24px;
@@ -484,15 +620,19 @@ const SessionCard = styled.article<{
 
 const CardGlow = styled.div`
   position: absolute;
+
   width: 320px;
   height: 320px;
+
   right: -160px;
   bottom: -160px;
 
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
+
+  background: rgba(198, 227, 251, 0.12);
 
   filter: blur(8px);
+
   pointer-events: none;
 
   animation: ${glow} 7s ease-in-out infinite;
@@ -507,36 +647,62 @@ const CardTop = styled.div`
   z-index: 3;
 
   display: grid;
-  grid-template-columns: auto 1fr auto;
+
+  grid-template-columns:
+    auto
+    1fr
+    auto;
+
   align-items: center;
+
   gap: 16px;
 
   padding-bottom: 17px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(198, 227, 251, 0.22);
+
+  @media (max-width: 500px) {
+    gap: 10px;
+  }
 `;
 
 const CardNumber = styled.span`
-  font-size: 9px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 10px;
+  font-weight: 400;
+
   letter-spacing: 0.12em;
+
   opacity: 0.78;
 `;
 
 const CardLabel = styled.span`
-  font-size: 8px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 9px;
+  font-weight: 400;
+
   letter-spacing: 0.16em;
 `;
 
 const CardTime = styled.span`
-  font-size: 12px;
-  font-weight: 600;
+  font-family: "Mont", sans-serif;
+
+  font-size: 13px;
+  font-weight: 200;
+
   letter-spacing: -0.02em;
+
   opacity: 0.95;
+
   white-space: nowrap;
 
-  @media (max-width: 700px) {
+  @media (max-width: 850px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 500px) {
     font-size: 11px;
   }
 `;
@@ -547,26 +713,49 @@ const CardContent = styled.div`
 
   margin-top: auto;
   margin-bottom: auto;
+
   padding: 25px 0;
+
+  @media (max-width: 850px) {
+    padding: 20px 0;
+  }
 `;
 
 const SmallHeading = styled.span`
   display: block;
+
   margin-bottom: 11px;
 
-  font-size: 8px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 9px;
+  font-weight: 400;
+
   letter-spacing: 0.17em;
+
   opacity: 0.75;
 `;
 
 const CardTitle = styled.h3`
   margin: 0 0 20px;
 
+  font-family: "Chillen", sans-serif;
+
   font-size: clamp(42px, 4.5vw, 68px);
-  font-weight: 600;
+
+  font-weight: 400;
+
   line-height: 0.88;
+
   letter-spacing: -0.075em;
+
+  @media (max-width: 1100px) {
+    font-size: clamp(42px, 5.5vw, 62px);
+  }
+
+  @media (max-width: 850px) {
+    font-size: clamp(42px, 7vw, 60px);
+  }
 
   @media (max-width: 700px) {
     font-size: 48px;
@@ -574,14 +763,28 @@ const CardTitle = styled.h3`
 `;
 
 const CardDescription = styled.p`
-  max-width: 450px;
+  max-width: 500px;
+
   margin: 0;
 
-  font-size: 11px;
-  font-weight: 450;
+  font-family: "Mont", sans-serif;
+
+  font-size: 13px;
+  font-weight: 200;
+
   line-height: 1.65;
+
   letter-spacing: -0.01em;
+
   opacity: 0.9;
+
+  @media (max-width: 850px) {
+    font-size: 12.5px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 
 const CardBottom = styled.div`
@@ -589,37 +792,60 @@ const CardBottom = styled.div`
   z-index: 3;
 
   display: flex;
+
   align-items: flex-end;
   justify-content: space-between;
+
   gap: 20px;
 
   padding-top: 17px;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(198, 227, 251, 0.22);
 `;
 
 const Audience = styled.div`
-  max-width: 360px;
+  max-width: 500px;
 `;
 
 const MetaLabel = styled.span`
   display: block;
+
   margin-bottom: 6px;
 
-  font-size: 7px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 8px;
+  font-weight: 400;
+
   letter-spacing: 0.16em;
+
   opacity: 0.78;
 `;
 
 const MetaText = styled.span`
   display: block;
 
-  font-size: 9px;
-  font-weight: 500;
+  font-family: "Mont", sans-serif;
+
+  font-size: 11px;
+  font-weight: 200;
+
   line-height: 1.5;
+
   opacity: 0.95;
+
+  @media (max-width: 850px) {
+    font-size: 10.5px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
 `;
+
+/* =========================
+   SMALL CARDS
+========================= */
 
 const InfoCard = styled.article<{
   $type: "breakfast" | "lunch" | "both";
@@ -627,27 +853,30 @@ const InfoCard = styled.article<{
   $visible: boolean;
 }>`
   position: relative;
+
   grid-area: ${({ $type }) => $type};
 
   min-width: 0;
-  padding: 21px;
+
+  padding: 22px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   overflow: hidden;
+
   border-radius: 24px;
 
-  color: #111111;
+  color: #083672;
 
   background: ${({ $type }) => {
     if ($type === "breakfast") {
       return `
         linear-gradient(
           145deg,
-          #f4efe5,
-          #e8e0d1
+          #c6e3fb,
+          #e1f0fb
         )
       `;
     }
@@ -656,8 +885,8 @@ const InfoCard = styled.article<{
       return `
         linear-gradient(
           145deg,
-          #ececec,
-          #dedee0
+          #f7faff,
+          #e7f1fa
         )
       `;
     }
@@ -665,14 +894,14 @@ const InfoCard = styled.article<{
     return `
       linear-gradient(
         145deg,
-        #f7f7f7,
-        #e9e9e9
+        #ffffff,
+        #f0f7fd
       )
     `;
   }};
 
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 10px 30px rgba(0, 0, 0, 0.05);
+    0 10px 30px rgba(8, 54, 114, 0.06);
 
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 
@@ -697,7 +926,7 @@ const InfoCard = styled.article<{
 
     border-radius: 50%;
 
-    background: rgba(184, 149, 74, 0.12);
+    background: rgba(0, 103, 212, 0.1);
 
     filter: blur(5px);
 
@@ -706,14 +935,19 @@ const InfoCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.09);
+
+    box-shadow: 0 20px 50px rgba(8, 54, 114, 0.1);
   }
 
   &:hover::before {
     transform: scale(1.3);
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 850px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 650px) {
     min-height: 190px;
     border-radius: 22px;
   }
@@ -738,31 +972,38 @@ const InfoTop = styled.div`
   z-index: 2;
 
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 `;
 
 const InfoNumber = styled.span`
-  color: #666666;
-  font-size: 8px;
-  font-weight: 700;
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
+
+  font-size: 9px;
+  font-weight: 400;
+
   letter-spacing: 0.12em;
 `;
 
 const InfoIcon = styled.span`
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.65);
-  color: #8a6828;
+  background: rgba(255, 255, 255, 0.7);
 
-  font-size: 17px;
+  color: #0067d4;
+
+  font-size: 18px;
 `;
 
 const InfoContent = styled.div`
@@ -772,31 +1013,51 @@ const InfoContent = styled.div`
 
 const InfoLabel = styled.span`
   display: block;
+
   margin-bottom: 7px;
 
-  color: #666666;
+  color: #0067d4;
 
-  font-size: 7px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 8px;
+  font-weight: 400;
+
   letter-spacing: 0.15em;
 `;
 
 const InfoTitle = styled.h4`
-  margin: 0 0 5px;
+  margin: 0 0 6px;
 
-  color: #111111;
+  color: #083672;
 
-  font-size: clamp(28px, 2.7vw, 40px);
-  font-weight: 600;
+  font-family: "Chillen", sans-serif;
+
+  font-size: clamp(30px, 2.7vw, 40px);
+
+  font-weight: 400;
+
   line-height: 0.9;
+
   letter-spacing: -0.065em;
+
+  @media (max-width: 850px) {
+    font-size: clamp(28px, 4vw, 36px);
+  }
+
+  @media (max-width: 650px) {
+    font-size: 34px;
+  }
 `;
 
 const InfoTime = styled.span`
   color: #555555;
 
-  font-size: 11px;
-  font-weight: 600;
+  font-family: "Mont", sans-serif;
+
+  font-size: 12px;
+  font-weight: 200;
+
   letter-spacing: -0.01em;
 `;
 
@@ -808,23 +1069,45 @@ const BothContent = styled.div`
 const BothTitle = styled.h4`
   margin: 7px 0 10px;
 
-  color: #111111;
+  color: #083672;
 
-  font-size: clamp(36px, 3.5vw, 52px);
-  font-weight: 600;
+  font-family: "Chillen", sans-serif;
+
+  font-size: clamp(38px, 3.5vw, 52px);
+
+  font-weight: 400;
+
   line-height: 0.84;
+
   letter-spacing: -0.07em;
+
+  @media (max-width: 850px) {
+    font-size: 42px;
+  }
 `;
 
 const BothText = styled.p`
-  max-width: 200px;
+  max-width: 240px;
+
   margin: 0;
 
   color: #555555;
 
-  font-size: 9px;
+  font-family: "Mont", sans-serif;
+
+  font-size: 11px;
+  font-weight: 200;
+
   line-height: 1.5;
+
+  @media (max-width: 850px) {
+    font-size: 10.5px;
+  }
 `;
+
+/* =========================
+   QUOTE
+========================= */
 
 const QuoteCard = styled.article<{
   $delay: string;
@@ -835,19 +1118,22 @@ const QuoteCard = styled.article<{
   position: relative;
 
   min-width: 0;
-  padding: 21px;
+
+  padding: 22px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   overflow: hidden;
+
   border-radius: 24px;
 
-  background: #111111;
+  background: #083672;
+
   color: #ffffff;
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 40px rgba(8, 54, 114, 0.12);
 
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
 
@@ -861,10 +1147,15 @@ const QuoteCard = styled.article<{
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.15);
+
+    box-shadow: 0 22px 55px rgba(8, 54, 114, 0.2);
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 850px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 650px) {
     min-height: 190px;
     border-radius: 22px;
   }
@@ -881,44 +1172,70 @@ const QuoteCard = styled.article<{
 `;
 
 const QuoteMark = styled.span`
-  color: #c5a45e;
+  color: #0067d4;
 
-  font-size: 42px;
-  font-weight: 500;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 46px;
+  font-weight: 400;
+
   line-height: 0.5;
 `;
 
 const QuoteText = styled.p`
-  max-width: 250px;
+  max-width: 430px;
+
   margin: 0;
 
-  color: #f1f1f1;
+  color: #ffffff;
 
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 21px;
+  font-weight: 400;
+
+  line-height: 1.18;
+
   letter-spacing: -0.04em;
+
+  @media (max-width: 850px) {
+    font-size: 19px;
+  }
+
+  @media (max-width: 650px) {
+    font-size: 20px;
+  }
 `;
 
 const QuoteBottom = styled.div`
   display: flex;
+
   align-items: center;
+
   gap: 10px;
 `;
 
 const QuoteLine = styled.span`
   width: 20px;
   height: 1px;
-  background: #c5a45e;
+
+  background: #0067d4;
 `;
 
 const QuoteLabel = styled.span`
-  color: #c8c8c8;
+  color: #c6e3fb;
 
-  font-size: 7px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 8px;
+  font-weight: 400;
+
   letter-spacing: 0.15em;
 `;
+
+/* =========================
+   BOTTOM NOTE
+========================= */
 
 const BottomNote = styled.div`
   margin-top: 55px;
@@ -931,14 +1248,19 @@ const BottomNote = styled.div`
 const BottomLine = styled.div`
   width: 100%;
   height: 1px;
-  background: #e5e5e5;
+
+  background: #c6e3fb;
 `;
 
 const BottomContent = styled.div`
   display: grid;
+
   grid-template-columns: 90px 1fr;
+
   align-items: center;
+
   gap: 25px;
+
   padding-top: 18px;
 
   @media (max-width: 600px) {
@@ -948,10 +1270,13 @@ const BottomContent = styled.div`
 `;
 
 const BottomNumber = styled.span`
-  color: #8a6828;
+  color: #0067d4;
 
-  font-size: 8px;
-  font-weight: 700;
+  font-family: "Chillen", sans-serif;
+
+  font-size: 9px;
+  font-weight: 400;
+
   letter-spacing: 0.12em;
 `;
 
@@ -960,7 +1285,14 @@ const BottomText = styled.p`
 
   color: #555555;
 
-  font-size: 9px;
-  font-weight: 500;
+  font-family: "Mont", sans-serif;
+
+  font-size: 11px;
+  font-weight: 200;
+
   line-height: 1.5;
+
+  @media (max-width: 600px) {
+    font-size: 10.5px;
+  }
 `;

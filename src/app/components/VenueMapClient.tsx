@@ -1,29 +1,28 @@
 "use client";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  ZoomControl,
-} from "react-leaflet";
+import { MapContainer, Marker, TileLayer, ZoomControl } from "react-leaflet";
+
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const position: [number, number] = [6.45363, 3.44568];
+
+const DIRECTIONS_URL =
+  "https://www.google.com/maps/search/?api=1&query=The+Wheatbaker+Ikoyi+Lagos";
 
 const wheatbakerIcon = L.divIcon({
   className: "wheatbaker-marker",
   html: `
     <div class="marker-wrap">
       <div class="marker-pulse"></div>
-      <div class="marker-pin">
+      <div class="marker-pulse marker-pulse-delay"></div>
+
+      <div class="marker-core">
         <div class="marker-dot"></div>
       </div>
     </div>
   `,
-  iconSize: [46, 46],
-  iconAnchor: [23, 23],
-  popupAnchor: [0, -25],
+  iconSize: [54, 54],
+  iconAnchor: [27, 27],
 });
 
 export default function VenueMapClient() {
@@ -46,21 +45,26 @@ export default function VenueMapClient() {
 
         <ZoomControl position="bottomright" />
 
-        <Marker position={position} icon={wheatbakerIcon}>
-          <Popup>
-            <strong>The Wheatbaker</strong>
-            <br />
-            4 Onitolo Road
-            <br />
-            Ikoyi, Lagos
-          </Popup>
-        </Marker>
+        <Marker position={position} icon={wheatbakerIcon} />
       </MapContainer>
 
-      <div className="map-overlay">
-        <span>THE VENUE</span>
-        <strong>The Wheatbaker</strong>
+      <div className="map-top">
+        <div className="location-status">
+          <span className="status-dot" />
+          <span>IKOYI · LAGOS</span>
+        </div>
       </div>
+
+      <a
+        href={DIRECTIONS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="directions-button"
+      >
+        <span>Get directions</span>
+
+        <span className="arrow">↗</span>
+      </a>
 
       <div className="map-credit">© OpenStreetMap contributors</div>
 
@@ -70,10 +74,10 @@ export default function VenueMapClient() {
           width: 100%;
           height: 500px;
           overflow: hidden;
-          border-radius: 28px;
-          background: #dedbd2;
-          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.1),
-            0 5px 15px rgba(0, 0, 0, 0.04);
+          border-radius: 24px;
+          background: #eef5fa;
+          box-shadow: 0 30px 70px rgba(8, 54, 114, 0.1),
+            0 5px 15px rgba(8, 54, 114, 0.04);
         }
 
         .leaflet-map {
@@ -82,9 +86,17 @@ export default function VenueMapClient() {
           z-index: 1;
         }
 
+        .leaflet-tile-pane {
+          filter: saturate(0.72) contrast(0.96);
+        }
+
         .leaflet-control-zoom {
           border: none !important;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+          box-shadow: 0 8px 25px rgba(8, 54, 114, 0.14) !important;
+          overflow: hidden;
+          border-radius: 10px !important;
+          margin-right: 18px !important;
+          margin-bottom: 18px !important;
         }
 
         .leaflet-control-zoom a {
@@ -92,14 +104,17 @@ export default function VenueMapClient() {
           height: 34px !important;
           line-height: 34px !important;
           border: none !important;
-          background: rgba(255, 255, 255, 0.94) !important;
-          color: #111111 !important;
+          background: #ffffff !important;
+          color: #083672 !important;
+          font-family: "Mont", sans-serif !important;
           font-size: 18px !important;
+          font-weight: 200 !important;
+          transition: background 0.25s ease, color 0.25s ease;
         }
 
         .leaflet-control-zoom a:hover {
-          background: #ffffff !important;
-          color: #9a762e !important;
+          background: #c6e3fb !important;
+          color: #0067d4 !important;
         }
 
         .leaflet-control-zoom a:first-child {
@@ -110,116 +125,172 @@ export default function VenueMapClient() {
           border-radius: 0 0 10px 10px !important;
         }
 
-        .leaflet-popup-content-wrapper {
-          border-radius: 14px !important;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12) !important;
-        }
-
-        .leaflet-popup-content {
-          margin: 14px 16px !important;
-          color: #292929;
-          font-size: 13px;
-          line-height: 1.6;
-        }
-
-        .leaflet-popup-tip {
-          box-shadow: none !important;
+        .wheatbaker-marker {
+          background: transparent !important;
+          border: none !important;
         }
 
         .marker-wrap {
           position: relative;
-          width: 46px;
-          height: 46px;
+          width: 54px;
+          height: 54px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .marker-pulse {
           position: absolute;
-          width: 46px;
-          height: 46px;
-          top: 0;
-          left: 0;
+          width: 54px;
+          height: 54px;
           border-radius: 50%;
-          background: rgba(154, 118, 46, 0.18);
-          animation: markerPulse 2.4s ease-out infinite;
+          background: rgba(0, 103, 212, 0.2);
+          animation: venueMarkerPulse 2.5s ease-out infinite;
         }
 
-        .marker-pin {
-          position: absolute;
-          top: 7px;
-          left: 7px;
-          width: 32px;
-          height: 32px;
+        .marker-pulse-delay {
+          animation-delay: 1.25s;
+        }
+
+        .marker-core {
+          position: relative;
+          z-index: 3;
+          width: 18px;
+          height: 18px;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 50% 50% 50% 0;
-          background: #111111;
-          transform: rotate(-45deg);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+          border-radius: 50%;
+          background: #083672;
+          border: 3px solid #ffffff;
+          box-shadow: 0 6px 18px rgba(8, 54, 114, 0.3),
+            0 0 0 5px rgba(198, 227, 251, 0.55);
         }
 
         .marker-dot {
-          width: 9px;
-          height: 9px;
+          width: 5px;
+          height: 5px;
           border-radius: 50%;
-          background: #d0ad65;
+          background: #c6e3fb;
         }
 
-        .map-overlay {
+        .map-top {
           position: absolute;
           z-index: 500;
-          top: 24px;
-          left: 24px;
+          top: 20px;
+          left: 20px;
+        }
+
+        .location-status {
           display: flex;
-          flex-direction: column;
-          gap: 5px;
-          padding: 14px 16px;
-          border: 1px solid rgba(255, 255, 255, 0.7);
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(15px);
-          -webkit-backdrop-filter: blur(15px);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+          align-items: center;
+          gap: 8px;
+          padding: 9px 13px;
+          border-radius: 100px;
+          background: #083672;
+          box-shadow: 0 10px 25px rgba(8, 54, 114, 0.2);
         }
 
-        .map-overlay span {
-          color: #9a762e;
-          font-size: 8px;
-          font-weight: 700;
-          letter-spacing: 0.14em;
+        .location-status span:last-child {
+          color: #ffffff;
+          font-family: "Chillen", sans-serif;
+          font-size: 9px;
+          font-weight: 400;
+          letter-spacing: 0.12em;
         }
 
-        .map-overlay strong {
-          color: #111111;
-          font-size: 13px;
-          font-weight: 600;
+        .status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #c6e3fb;
+          box-shadow: 0 0 0 4px rgba(198, 227, 251, 0.16);
+        }
+
+        .directions-button {
+          position: absolute;
+          z-index: 500;
+          right: 20px;
+          bottom: 20px;
+
+          display: flex;
+          align-items: center;
+          gap: 14px;
+
+          min-height: 48px;
+          padding: 0 8px 0 18px;
+
+          border-radius: 100px;
+          background: #ffffff;
+          color: #083672;
+
+          font-family: "Chillen", sans-serif;
+          font-size: 12px;
+          font-weight: 400;
+
+          text-decoration: none;
+
+          box-shadow: 0 14px 35px rgba(8, 54, 114, 0.18);
+
+          transition: background 0.25s ease, color 0.25s ease,
+            transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .directions-button:hover {
+          background: #c6e3fb;
+          color: #083672;
+          transform: translateY(-3px);
+          box-shadow: 0 18px 40px rgba(8, 54, 114, 0.22);
+        }
+
+        .arrow {
+          width: 34px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: #0067d4;
+          color: #ffffff;
+          font-family: Arial, sans-serif;
+          font-size: 16px;
+          transition: transform 0.25s ease;
+        }
+
+        .directions-button:hover .arrow {
+          transform: translate(2px, -2px);
         }
 
         .map-credit {
           position: absolute;
           z-index: 500;
-          right: 10px;
+          left: 10px;
           bottom: 8px;
+
           padding: 3px 6px;
+
           border-radius: 4px;
           background: rgba(255, 255, 255, 0.8);
-          color: #444444;
-          font-size: 9px;
+
+          color: #555555;
+          font-family: "Mont", sans-serif;
+          font-size: 8px;
+          font-weight: 200;
         }
 
-        @keyframes markerPulse {
+        @keyframes venueMarkerPulse {
           0% {
-            transform: scale(0.5);
-            opacity: 0.8;
+            transform: scale(0.3);
+            opacity: 0.75;
           }
 
           70% {
-            transform: scale(1.3);
+            transform: scale(1.15);
             opacity: 0;
           }
 
           100% {
-            transform: scale(1.3);
+            transform: scale(1.15);
             opacity: 0;
           }
         }
@@ -233,12 +304,22 @@ export default function VenueMapClient() {
         @media (max-width: 600px) {
           .venue-map {
             height: 350px;
-            border-radius: 22px;
+            border-radius: 20px;
           }
 
-          .map-overlay {
-            top: 18px;
-            left: 18px;
+          .map-top {
+            top: 16px;
+            left: 16px;
+          }
+
+          .directions-button {
+            right: 16px;
+            bottom: 16px;
+          }
+
+          .leaflet-control-zoom {
+            margin-right: 14px !important;
+            margin-bottom: 14px !important;
           }
         }
 

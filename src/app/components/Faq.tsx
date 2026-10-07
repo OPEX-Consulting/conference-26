@@ -60,9 +60,11 @@ export default function Faq() {
             <Eyebrow>QUESTIONS</Eyebrow>
 
             <Heading>
-              Everything
+              <HeadingLight>Everything</HeadingLight>
               <br />
-              <Accent>you need to know.</Accent>
+              <HeadingBrand>
+                <Accent>you need to know.</Accent>
+              </HeadingBrand>
             </Heading>
           </HeaderLeft>
 
@@ -156,22 +158,18 @@ const HeaderLeft = styled.div``;
 const Eyebrow = styled.span`
   display: block;
   margin-bottom: 22px;
-
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.17em;
   text-transform: uppercase;
 `;
 
 const Heading = styled.h2`
   margin: 0;
-
-  color: #111111;
-
+  color: #083672;
   font-size: clamp(52px, 6vw, 82px);
-  font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.075em;
 
@@ -180,8 +178,18 @@ const Heading = styled.h2`
   }
 `;
 
+const HeadingLight = styled.span`
+  font-family: "Mont", sans-serif;
+  font-weight: 200;
+`;
+
+const HeadingBrand = styled.span`
+  font-family: "Chillen", sans-serif;
+  font-weight: 400;
+`;
+
 const Accent = styled.span`
-  color: #8a6828;
+  color: #0067d4;
 `;
 
 const HeaderRight = styled.div`
@@ -191,11 +199,10 @@ const HeaderRight = styled.div`
 const Intro = styled.p`
   max-width: 400px;
   margin: 0;
-
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 200;
   line-height: 1.7;
   letter-spacing: -0.015em;
 `;
@@ -206,17 +213,15 @@ const FaqList = styled.div`
 
 const FaqItem = styled.div<{ $open: boolean }>`
   position: relative;
-
-  border-top: 1px solid #e5e5e5;
-
+  border-top: 1px solid #c6e3fb;
   transition: background 0.35s ease;
 
   &:last-child {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #c6e3fb;
   }
 
   &:hover {
-    background: ${({ $open }) => ($open ? "transparent" : "#fafafa")};
+    background: ${({ $open }) => ($open ? "transparent" : "#f7faff")};
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -227,23 +232,19 @@ const FaqItem = styled.div<{ $open: boolean }>`
 const QuestionButton = styled.button`
   width: 100%;
   min-height: 105px;
-
   display: grid;
   grid-template-columns: 70px 1fr 45px;
   align-items: center;
   gap: 20px;
-
   padding: 0 10px;
-
   border: 0;
   background: transparent;
   color: inherit;
-
   text-align: left;
   cursor: pointer;
 
   &:focus-visible {
-    outline: 3px solid #8a6828;
+    outline: 3px solid #0067d4;
     outline-offset: -3px;
     border-radius: 4px;
   }
@@ -257,27 +258,26 @@ const QuestionButton = styled.button`
 `;
 
 const Number = styled.span`
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
 `;
 
 const Question = styled.span`
   margin: 0;
-
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(18px, 2vw, 24px);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.035em;
-
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     letter-spacing 0.35s ease;
 
   ${QuestionButton}:hover & {
+    color: #0067d4;
     transform: translateX(4px);
     letter-spacing: -0.045em;
   }
@@ -298,17 +298,14 @@ const Question = styled.span`
 
 const Plus = styled.span<{ $open: boolean }>`
   position: relative;
-
   width: 34px;
   height: 34px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
 
-  background: ${({ $open }) => ($open ? "#111111" : "#f3f3f1")};
+  background: ${({ $open }) => ($open ? "#083672" : "#c6e3fb")};
 
   transform: ${({ $open }) => ($open ? "rotate(180deg)" : "rotate(0deg)")};
 
@@ -316,7 +313,7 @@ const Plus = styled.span<{ $open: boolean }>`
     background 0.3s ease;
 
   ${QuestionButton}:hover & {
-    background: ${({ $open }) => ($open ? "#111111" : "#e9e9e6")};
+    background: ${({ $open }) => ($open ? "#083672" : "#0067d4")};
   }
 
   @media (max-width: 700px) {
@@ -331,24 +328,18 @@ const Plus = styled.span<{ $open: boolean }>`
 
 const Horizontal = styled.span<{ $open: boolean }>`
   position: absolute;
-
   width: 11px;
   height: 1.5px;
-
   border-radius: 999px;
-
-  background: ${({ $open }) => ($open ? "#ffffff" : "#111111")};
+  background: ${({ $open }) => ($open ? "#ffffff" : "#083672")};
 `;
 
 const Vertical = styled.span<{ $open: boolean }>`
   position: absolute;
-
   width: 1.5px;
   height: 11px;
-
   border-radius: 999px;
-
-  background: ${({ $open }) => ($open ? "#ffffff" : "#111111")};
+  background: ${({ $open }) => ($open ? "#ffffff" : "#083672")};
 
   transform: ${({ $open }) => ($open ? "scaleY(0)" : "scaleY(1)")};
 
@@ -361,9 +352,7 @@ const Vertical = styled.span<{ $open: boolean }>`
 
 const AnswerWrapper = styled.div<{ $open: boolean }>`
   display: grid;
-
   grid-template-rows: ${({ $open }) => ($open ? "1fr" : "0fr")};
-
   transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (prefers-reduced-motion: reduce) {
@@ -374,15 +363,13 @@ const AnswerWrapper = styled.div<{ $open: boolean }>`
 const Answer = styled.div<{ $open: boolean }>`
   min-height: 0;
   overflow: hidden;
-
   max-width: 760px;
-
   padding: 0 80px 0 100px;
 
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 200;
   line-height: 1.75;
   letter-spacing: -0.01em;
 
@@ -402,7 +389,6 @@ const Answer = styled.div<{ $open: boolean }>`
   @media (max-width: 700px) {
     padding-left: 59px;
     padding-right: 35px;
-
     font-size: 14px;
     line-height: 1.7;
 
@@ -423,7 +409,6 @@ const Bottom = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-top: 55px;
 
   @media (max-width: 600px) {
@@ -435,36 +420,33 @@ const Bottom = styled.div`
 
 const BottomText = styled.span`
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 200;
 `;
 
 const Contact = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 12px;
-
   padding: 13px 19px;
-
   border-radius: 999px;
-
-  background: #111111;
+  background: #083672;
   color: #ffffff;
-
+  font-family: "Chillen", sans-serif;
   font-size: 11px;
-  font-weight: 600;
-
+  font-weight: 400;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease, background 0.3s ease;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.14);
+    background: #0067d4;
+    box-shadow: 0 12px 25px rgba(0, 103, 212, 0.2);
   }
 
   &:focus-visible {
-    outline: 3px solid #8a6828;
+    outline: 3px solid #0067d4;
     outline-offset: 4px;
   }
 
@@ -479,7 +461,6 @@ const Contact = styled.a`
 
 const Arrow = styled.span`
   font-size: 15px;
-
   transition: transform 0.3s ease;
 
   ${Contact}:hover & {

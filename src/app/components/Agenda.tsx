@@ -1,8 +1,8 @@
 "use client";
-
 import styled from "styled-components";
-
-const RESERVATION_URL = "https://workshop.opexconsult.com/";
+type AgendaProps = {
+  onReserve: () => void;
+};
 
 const agenda = [
   {
@@ -44,7 +44,7 @@ const agenda = [
   },
 ];
 
-export default function Agenda() {
+export default function Agenda({ onReserve }: AgendaProps) {
   return (
     <Section id="agenda">
       <Container>
@@ -53,9 +53,11 @@ export default function Agenda() {
             <Eyebrow>THE AGENDA</Eyebrow>
 
             <Heading>
-              One day.
+              <HeadingLight>One day.</HeadingLight>
               <br />
-              <Accent>Two conversations.</Accent>
+              <HeadingBrand>
+                <Accent>Two conversations.</Accent>
+              </HeadingBrand>
             </Heading>
           </HeaderLeft>
 
@@ -82,14 +84,12 @@ export default function Agenda() {
 
               <DotColumn>
                 <Dot />
-
                 {index !== agenda.length - 1 && <Line />}
               </DotColumn>
 
               <Content>
                 <TopRow>
                   <Type>{item.type}</Type>
-
                   <Index>{String(index + 1).padStart(2, "0")}</Index>
                 </TopRow>
 
@@ -99,7 +99,6 @@ export default function Agenda() {
 
                 <Audience>
                   <AudienceLabel>FOR</AudienceLabel>
-
                   <AudienceText>{item.audience}</AudienceText>
                 </Audience>
               </Content>
@@ -120,13 +119,8 @@ export default function Agenda() {
             </BottomText>
           </BottomLeft>
 
-          <BottomCTA
-            href={RESERVATION_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <BottomCTA type="button" onClick={onReserve}>
             Reserve your seat
-            <Arrow aria-hidden="true">↗</Arrow>
           </BottomCTA>
         </Bottom>
       </Container>
@@ -136,9 +130,7 @@ export default function Agenda() {
 
 const Section = styled.section`
   width: 100%;
-
-  background: #f7f7f5;
-
+  background: #f7faff;
   padding: 125px 0 130px;
 
   @media (max-width: 700px) {
@@ -148,26 +140,19 @@ const Section = styled.section`
 
 const Container = styled.div`
   width: min(1200px, 90vw);
-
   margin: 0 auto;
 `;
 
 const Header = styled.div`
   display: grid;
-
   grid-template-columns: 1.2fr 0.8fr;
-
   gap: 100px;
-
   align-items: end;
-
   margin-bottom: 100px;
 
   @media (max-width: 850px) {
     grid-template-columns: 1fr;
-
     gap: 30px;
-
     margin-bottom: 70px;
   }
 `;
@@ -176,31 +161,20 @@ const HeaderLeft = styled.div``;
 
 const Eyebrow = styled.span`
   display: block;
-
   margin-bottom: 22px;
-
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 9px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.18em;
-
   text-transform: uppercase;
 `;
 
 const Heading = styled.h2`
   margin: 0;
-
-  color: #111111;
-
+  color: #083672;
   font-size: clamp(52px, 6vw, 82px);
-
-  font-weight: 600;
-
   line-height: 0.9;
-
   letter-spacing: -0.075em;
 
   @media (max-width: 700px) {
@@ -208,59 +182,56 @@ const Heading = styled.h2`
   }
 `;
 
+const HeadingLight = styled.span`
+  font-family: "Mont", sans-serif;
+  font-weight: 200;
+`;
+
+const HeadingBrand = styled.span`
+  font-family: "Chillen", sans-serif;
+  font-weight: 400;
+`;
+
 const Accent = styled.span`
-  color: #8a6828;
+  color: #0067d4;
 `;
 
 const HeaderRight = styled.div`
   display: flex;
-
   flex-direction: column;
-
   gap: 35px;
-
   padding-bottom: 5px;
 `;
 
 const Intro = styled.p`
   max-width: 430px;
-
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 13px;
-
-  font-weight: 500;
-
+  font-weight: 200;
   line-height: 1.7;
-
   letter-spacing: -0.015em;
 `;
 
 const Date = styled.div`
   display: flex;
-
   align-items: center;
-
   gap: 14px;
 `;
 
 const DateLabel = styled.span`
-  color: #666666;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 8px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.16em;
 `;
 
 const DateValue = styled.span`
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: 10px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.08em;
 `;
 
@@ -270,11 +241,8 @@ const Timeline = styled.div`
 
 const AgendaItem = styled.div`
   position: relative;
-
   display: grid;
-
   grid-template-columns: 100px 30px 1fr;
-
   min-height: 220px;
 
   transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
@@ -282,7 +250,6 @@ const AgendaItem = styled.div`
 
   @media (max-width: 700px) {
     grid-template-columns: 65px 20px 1fr;
-
     min-height: 250px;
   }
 
@@ -293,27 +260,20 @@ const AgendaItem = styled.div`
 
 const HoverGlow = styled.div`
   position: absolute;
-
   z-index: 0;
-
   top: -15px;
-
   right: -25px;
-
   bottom: 15px;
-
   left: 75px;
-
   border-radius: 22px;
 
   background: radial-gradient(
     circle at 20% 50%,
-    rgba(138, 104, 40, 0.08),
+    rgba(0, 103, 212, 0.09),
     transparent 45%
   );
 
   opacity: 0;
-
   pointer-events: none;
 
   transition: opacity 0.5s ease;
@@ -324,7 +284,6 @@ const HoverGlow = styled.div`
 
   @media (max-width: 700px) {
     left: 40px;
-
     right: -10px;
   }
 
@@ -335,14 +294,10 @@ const HoverGlow = styled.div`
 
 const TimeColumn = styled.div`
   position: relative;
-
   z-index: 2;
-
   padding-top: 3px;
-
-  text-align: right;
-
   padding-right: 25px;
+  text-align: right;
 
   @media (max-width: 700px) {
     padding-right: 15px;
@@ -351,20 +306,16 @@ const TimeColumn = styled.div`
 
 const Time = styled.span`
   display: block;
-
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: 18px;
-
-  font-weight: 600;
-
+  font-weight: 400;
   letter-spacing: -0.04em;
 
   transition: font-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease;
 
   ${AgendaItem}:hover & {
-    color: #8a6828;
-
+    color: #0067d4;
     font-size: 20px;
   }
 
@@ -383,14 +334,11 @@ const Time = styled.span`
 
 const EndTime = styled.span`
   display: block;
-
   margin-top: 3px;
-
   color: #666666;
-
+  font-family: "Mont", sans-serif;
   font-size: 9px;
-
-  font-weight: 600;
+  font-weight: 200;
 
   transition: color 0.4s ease;
 
@@ -401,39 +349,30 @@ const EndTime = styled.span`
 
 const DotColumn = styled.div`
   position: relative;
-
   z-index: 2;
-
   display: flex;
-
   justify-content: center;
 `;
 
 const Dot = styled.span`
   position: relative;
-
   z-index: 2;
-
   width: 9px;
-
   height: 9px;
-
   margin-top: 7px;
-
   border-radius: 50%;
+  background: #0067d4;
 
-  background: #8a6828;
-
-  box-shadow: 0 0 0 5px rgba(138, 104, 40, 0.08),
-    0 3px 10px rgba(138, 104, 40, 0.16);
+  box-shadow: 0 0 0 5px rgba(0, 103, 212, 0.08),
+    0 3px 10px rgba(0, 103, 212, 0.16);
 
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 
   ${AgendaItem}:hover & {
     transform: scale(1.35);
 
-    box-shadow: 0 0 0 6px rgba(138, 104, 40, 0.12),
-      0 4px 15px rgba(138, 104, 40, 0.22);
+    box-shadow: 0 0 0 6px rgba(0, 103, 212, 0.12),
+      0 4px 15px rgba(0, 103, 212, 0.22);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -443,24 +382,17 @@ const Dot = styled.span`
 
 const Line = styled.div`
   position: absolute;
-
   top: 20px;
-
   bottom: 0;
-
   width: 1px;
-
-  background: #d5d5d3;
+  background: #c6e3fb;
 `;
 
 const Content = styled.div`
   position: relative;
-
   z-index: 2;
-
   padding: 0 0 70px 35px;
-
-  border-bottom: 1px solid #d9d9d7;
+  border-bottom: 1px solid #c6e3fb;
 
   @media (max-width: 700px) {
     padding: 0 0 55px 20px;
@@ -469,21 +401,16 @@ const Content = styled.div`
 
 const TopRow = styled.div`
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   margin-bottom: 17px;
 `;
 
 const Type = styled.span`
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 8px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.16em;
 
   transition: letter-spacing 0.4s ease, color 0.4s ease;
@@ -499,18 +426,15 @@ const Type = styled.span`
 
 const Index = styled.span`
   color: #666666;
-
+  font-family: "Chillen", sans-serif;
   font-size: 9px;
-
-  font-weight: 600;
-
+  font-weight: 400;
   letter-spacing: 0.08em;
 
   transition: color 0.4s ease, transform 0.4s ease;
 
   ${AgendaItem}:hover & {
-    color: #8a6828;
-
+    color: #0067d4;
     transform: translateX(-5px);
   }
 
@@ -521,57 +445,46 @@ const Index = styled.span`
 
 const Title = styled.h3`
   margin: 0;
-
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(28px, 3vw, 42px);
-
-  font-weight: 600;
-
+  font-weight: 400;
   line-height: 1;
-
   letter-spacing: -0.055em;
 
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    letter-spacing 0.5s ease;
+    letter-spacing 0.5s ease, color 0.35s ease;
 
   ${AgendaItem}:hover & {
+    color: #0067d4;
     transform: translateX(5px);
-
     letter-spacing: -0.065em;
   }
 
   @media (max-width: 700px) {
     font-size: 27px;
-
     line-height: 1.02;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    transition: color 0.2s ease;
   }
 `;
 
 const Description = styled.p`
   max-width: 650px;
-
   margin-top: 18px;
-
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 12px;
-
-  font-weight: 500;
-
+  font-weight: 200;
   line-height: 1.7;
-
   letter-spacing: -0.01em;
 
   transition: color 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   ${AgendaItem}:hover & {
     color: #333333;
-
     transform: translateX(5px);
   }
 
@@ -582,11 +495,8 @@ const Description = styled.p`
 
 const Audience = styled.div`
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   margin-top: 27px;
 
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -597,9 +507,7 @@ const Audience = styled.div`
 
   @media (max-width: 600px) {
     align-items: flex-start;
-
     flex-direction: column;
-
     gap: 5px;
   }
 
@@ -609,106 +517,87 @@ const Audience = styled.div`
 `;
 
 const AudienceLabel = styled.span`
-  color: #666666;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 7px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.16em;
 `;
 
 const AudienceText = styled.span`
-  color: #333333;
-
+  color: #083672;
+  font-family: "Mont", sans-serif;
   font-size: 9px;
-
-  font-weight: 600;
-
+  font-weight: 200;
   letter-spacing: 0.01em;
 `;
 
 const Bottom = styled.div`
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   margin-top: 55px;
 
   @media (max-width: 600px) {
     align-items: flex-start;
-
     flex-direction: column;
-
     gap: 30px;
   }
 `;
 
 const BottomLeft = styled.div`
   display: flex;
-
   align-items: center;
-
   gap: 18px;
 `;
 
 const BottomNumber = styled.span`
-  color: #8a6828;
-
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
   font-size: 8px;
-
-  font-weight: 700;
-
+  font-weight: 400;
   letter-spacing: 0.12em;
 `;
 
 const BottomText = styled.p`
   color: #555555;
-
+  font-family: "Mont", sans-serif;
   font-size: 10px;
-
-  font-weight: 500;
-
+  font-weight: 200;
   line-height: 1.5;
 `;
 
-const BottomCTA = styled.a`
+const BottomCTA = styled.button`
   display: inline-flex;
-
   align-items: center;
-
-  gap: 15px;
+  justify-content: center;
 
   min-height: 48px;
+  padding: 0 24px;
 
-  padding: 0 22px;
-
+  border: 0;
   border-radius: 999px;
 
-  background: #111111;
-
+  background: #083672;
   color: #ffffff;
 
+  font-family: "Chillen", sans-serif;
   font-size: 11px;
+  font-weight: 400;
 
-  font-weight: 600;
+  cursor: pointer;
 
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.3s ease, box-shadow 0.35s ease;
 
   &:hover {
     transform: translateY(-3px) scale(1.02);
-
-    background: #222222;
-
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    background: #0067d4;
+    box-shadow: 0 12px 30px rgba(0, 103, 212, 0.2);
   }
 
   &:focus-visible {
-    outline: 3px solid #8a6828;
-
+    outline: 3px solid #0067d4;
     outline-offset: 4px;
   }
 
@@ -722,19 +611,5 @@ const BottomCTA = styled.a`
     &:hover {
       transform: none;
     }
-  }
-`;
-
-const Arrow = styled.span`
-  font-size: 15px;
-
-  transition: transform 0.35s ease;
-
-  ${BottomCTA}:hover & {
-    transform: translate(3px, -3px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
   }
 `;

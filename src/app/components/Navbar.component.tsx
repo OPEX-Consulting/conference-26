@@ -4,10 +4,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const RESERVATION_URL = "https://workshop.opexconsult.com/";
+type NavbarProps = {
+  onReserve: () => void;
+};
 
-export default function Navbar() {
+export default function Navbar({ onReserve }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [atFooter, setAtFooter] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -17,10 +20,31 @@ export default function Navbar() {
 
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    const footer = document.getElementById("footer");
+
+    if (!footer) {
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setAtFooter(entry.isIntersecting);
+      },
+      {
+        threshold: 0.05,
+      }
+    );
+
+    observer.observe(footer);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+
+      observer.disconnect();
     };
   }, []);
 
@@ -28,10 +52,21 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
+  const handleReserve = () => {
+    closeMenu();
+    onReserve();
+  };
+
   return (
-    <NavWrapper $scrolled={scrolled}>
-      <NavbarContainer $scrolled={scrolled}>
-        <Logo href="/" onClick={closeMenu} aria-label="OPEX Consulting home">
+    <NavWrapper $scrolled={scrolled} $atFooter={atFooter}>
+      <NavbarContainer $scrolled={scrolled} $atFooter={atFooter}>
+        <Logo
+          href="/"
+          onClick={closeMenu}
+          aria-label="OPEX Consulting home"
+          $scrolled={scrolled}
+          $atFooter={atFooter}
+        >
           <Image
             src="/images/opexwhite.webp"
             alt="OPEX Consulting"
@@ -42,482 +77,567 @@ export default function Navbar() {
         </Logo>
 
         <DesktopNavigation aria-label="Main navigation">
-          <NavLink href="#about">About</NavLink>
-          <NavLink href="#agenda">Agenda</NavLink>
-          <NavLink href="#sessions">Sessions</NavLink>
-          <NavLink href="#invitees">Invitees</NavLink>
-          <NavLink href="#faq">FAQ</NavLink>
+          <NavLink href="#about" $scrolled={scrolled} $atFooter={atFooter}>
+            About
+          </NavLink>
+
+          <NavLink href="#agenda" $scrolled={scrolled} $atFooter={atFooter}>
+            Agenda
+          </NavLink>
+
+          <NavLink href="#sessions" $scrolled={scrolled} $atFooter={atFooter}>
+            Sessions
+          </NavLink>
+
+          <NavLink href="#invitees" $scrolled={scrolled} $atFooter={atFooter}>
+            Invitees
+          </NavLink>
+
+          <NavLink href="#faq" $scrolled={scrolled} $atFooter={atFooter}>
+            FAQ
+          </NavLink>
         </DesktopNavigation>
 
         <DesktopCTA
-          href={RESERVATION_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          type="button"
+          onClick={handleReserve}
+          $scrolled={scrolled}
+          $atFooter={atFooter}
         >
           Reserve your seat
-          <Arrow aria-hidden="true">↗</Arrow>
         </DesktopCTA>
 
         <MobileMenuButton
           type="button"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((current) => !current)}
           aria-label={menuOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={menuOpen}
           aria-controls="mobile-navigation"
+          $scrolled={scrolled}
+          $atFooter={atFooter}
         >
-          <MenuLine $open={menuOpen} />
-          <MenuLine $open={menuOpen} />
+          <MenuLine
+            $open={menuOpen}
+            $scrolled={scrolled}
+            $atFooter={atFooter}
+          />
+
+          <MenuLine
+            $open={menuOpen}
+            $scrolled={scrolled}
+            $atFooter={atFooter}
+          />
         </MobileMenuButton>
       </NavbarContainer>
 
       <MobileMenu
         id="mobile-navigation"
         $open={menuOpen}
+        $atFooter={atFooter}
         aria-label="Mobile navigation"
       >
-        <MobileLink href="#about" onClick={closeMenu}>
+        <MobileLink href="#about" onClick={closeMenu} $atFooter={atFooter}>
           About
         </MobileLink>
 
-        <MobileLink href="#agenda" onClick={closeMenu}>
+        <MobileLink href="#agenda" onClick={closeMenu} $atFooter={atFooter}>
           Agenda
         </MobileLink>
 
-        <MobileLink href="#sessions" onClick={closeMenu}>
+        <MobileLink href="#sessions" onClick={closeMenu} $atFooter={atFooter}>
           Sessions
         </MobileLink>
 
-        <MobileLink href="#invitees" onClick={closeMenu}>
+        <MobileLink href="#invitees" onClick={closeMenu} $atFooter={atFooter}>
           Invitees
         </MobileLink>
 
-        <MobileLink href="#faq" onClick={closeMenu}>
+        <MobileLink href="#faq" onClick={closeMenu} $atFooter={atFooter}>
           FAQ
         </MobileLink>
 
-        <MobileCTA
-          href={RESERVATION_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={closeMenu}
-        >
+        <MobileCTA type="button" onClick={handleReserve} $atFooter={atFooter}>
           Reserve your seat
-          <Arrow aria-hidden="true">↗</Arrow>
         </MobileCTA>
       </MobileMenu>
     </NavWrapper>
   );
 }
 
-const NavWrapper = styled.header<{ $scrolled: boolean }>`
+const NavWrapper = styled.header<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
   position: ${({ $scrolled }) => ($scrolled ? "fixed" : "absolute")};
 
   top: ${({ $scrolled }) => ($scrolled ? "14px" : "0")};
 
   left: 0;
-
   width: 100%;
-
   z-index: 1000;
+
+  display: flex;
+  justify-content: center;
 
   padding: ${({ $scrolled }) => ($scrolled ? "0" : "0 7vw")};
 
-  display: flex;
-
-  justify-content: center;
-
-  transition: top 0.4s ease, padding 0.4s ease;
-
   pointer-events: none;
+
+  transition: top 0.35s ease, padding 0.35s ease;
+
+  @media (max-width: 768px) {
+    top: ${({ $scrolled }) => ($scrolled ? "12px" : "0")};
+
+    padding: ${({ $scrolled }) => ($scrolled ? "0" : "0 5vw")};
+  }
 `;
 
-const NavbarContainer = styled.nav<{ $scrolled: boolean }>`
+const NavbarContainer = styled.nav<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
   position: relative;
 
-  width: ${({ $scrolled }) => ($scrolled ? "min(900px, 92vw)" : "100%")};
+  width: ${({ $scrolled }) => ($scrolled ? "min(920px, 92vw)" : "100%")};
 
-  max-width: ${({ $scrolled }) => ($scrolled ? "700px" : "1320px")};
+  max-width: ${({ $scrolled }) => ($scrolled ? "760px" : "1320px")};
 
-  height: ${({ $scrolled }) => ($scrolled ? "58px" : "72px")};
+  height: ${({ $scrolled }) => ($scrolled ? "58px" : "76px")};
 
   margin: 0 auto;
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   padding: ${({ $scrolled }) => ($scrolled ? "0 18px" : "0")};
 
-  border: none;
-
   border-radius: ${({ $scrolled }) => ($scrolled ? "100px" : "0")};
 
-  background: ${({ $scrolled }) =>
-    $scrolled ? "rgba(0, 0, 0, 0.96)" : "transparent"};
+  background: ${({ $atFooter, $scrolled }) => {
+    if ($atFooter) {
+      return "#c6e3fb";
+    }
 
-  backdrop-filter: ${({ $scrolled }) => ($scrolled ? "blur(24px)" : "none")};
+    if ($scrolled) {
+      return "#083672";
+    }
+
+    return "transparent";
+  }};
+
+  box-shadow: ${({ $atFooter, $scrolled }) => {
+    if ($atFooter) {
+      return "0 14px 45px rgba(8, 54, 114, 0.12)";
+    }
+
+    if ($scrolled) {
+      return "0 14px 45px rgba(0, 0, 0, 0.25)";
+    }
+
+    return "none";
+  }};
+
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? "blur(20px)" : "none")};
 
   -webkit-backdrop-filter: ${({ $scrolled }) =>
-    $scrolled ? "blur(24px)" : "none"};
+    $scrolled ? "blur(20px)" : "none"};
 
-  box-shadow: ${({ $scrolled }) =>
-    $scrolled ? "0 12px 40px rgba(0, 0, 0, 0.24)" : "none"};
-
-  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s ease,
-    padding 0.4s ease, background 0.4s ease, border-radius 0.4s ease,
-    box-shadow 0.4s ease;
+  transition: width 0.4s ease, max-width 0.4s ease, height 0.35s ease,
+    padding 0.35s ease, background 0.35s ease, border-radius 0.35s ease,
+    box-shadow 0.35s ease;
 
   pointer-events: auto;
 
   @media (max-width: 768px) {
     width: ${({ $scrolled }) => ($scrolled ? "92vw" : "100%")};
 
-    height: ${({ $scrolled }) => ($scrolled ? "56px" : "64px")};
+    max-width: none;
 
-    padding: ${({ $scrolled }) => ($scrolled ? "0 16px" : "0")};
+    height: ${({ $scrolled }) => ($scrolled ? "56px" : "68px")};
+
+    padding: ${({ $scrolled }) => ($scrolled ? "0 15px" : "0")};
 
     border-radius: ${({ $scrolled }) => ($scrolled ? "100px" : "0")};
+
+    background: ${({ $atFooter, $scrolled }) => {
+      if ($atFooter) {
+        return "#c6e3fb";
+      }
+
+      if ($scrolled) {
+        return "#083672";
+      }
+
+      return "transparent";
+    }};
+
+    box-shadow: ${({ $atFooter, $scrolled }) => {
+      if ($atFooter) {
+        return "0 12px 35px rgba(8, 54, 114, 0.12)";
+      }
+
+      if ($scrolled) {
+        return "0 12px 35px rgba(0, 0, 0, 0.28)";
+      }
+
+      return "none";
+    }};
   }
 `;
 
-const Logo = styled.a`
+const Logo = styled.a<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
   display: flex;
-
   align-items: center;
-
   flex-shrink: 0;
 
   border-radius: 8px;
 
   img {
-    width: 62px;
+    display: block;
+
+    width: ${({ $scrolled }) => ($scrolled ? "60px" : "68px")};
 
     height: auto;
 
-    display: block;
+    filter: ${({ $atFooter }) =>
+      $atFooter ? "brightness(0) contrast(1.05)" : "none"};
 
-    transition: width 0.3s ease;
+    transition: width 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
   }
 
   &:focus-visible {
-    outline: 3px solid #d8b66f;
+    outline: 3px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
+
     outline-offset: 5px;
   }
 
   @media (max-width: 768px) {
     img {
-      width: 57px;
+      width: ${({ $scrolled }) => ($scrolled ? "57px" : "62px")};
     }
   }
 `;
 
 const DesktopNavigation = styled.div`
-  position: absolute;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
   display: flex;
-
   align-items: center;
-
+  justify-content: center;
   gap: 30px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 950px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
     display: none;
   }
 `;
 
-const NavLink = styled.a`
-  color: #eeeeee;
+const NavLink = styled.a<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
+  position: relative;
 
+  color: ${({ $atFooter }) => ($atFooter ? "#083672" : "#ffffff")};
+
+  font-family: "Chillen", sans-serif;
   font-size: 12px;
-
-  font-weight: 500;
-
+  font-weight: 400;
   letter-spacing: -0.01em;
 
   border-radius: 6px;
 
-  transition: color 0.25s ease, font-weight 0.25s ease, transform 0.25s ease;
+  transition: color 0.25s ease, transform 0.25s ease;
+
+  &::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+
+    width: 0;
+    height: 1px;
+
+    background: ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
+
+    transition: width 0.25s ease;
+  }
 
   &:hover {
-    color: #ffffff;
-
-    font-weight: 700;
+    color: ${({ $atFooter }) => ($atFooter ? "#0067d4" : "#c6e3fb")};
 
     transform: translateY(-1px);
   }
 
+  &:hover::after {
+    width: 100%;
+  }
+
   &:focus-visible {
-    outline: 3px solid #d8b66f;
+    outline: 3px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
 
     outline-offset: 5px;
 
-    color: #ffffff;
+    color: ${({ $atFooter }) => ($atFooter ? "#0067d4" : "#c6e3fb")};
   }
 `;
 
-const DesktopCTA = styled.a`
+const DesktopCTA = styled.button<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
-  gap: 9px;
+  min-height: 46px;
+  padding: 0 21px;
 
-  min-height: 38px;
-
-  padding: 0 17px;
-
+  border: 0;
   border-radius: 100px;
 
-  background: #ffffff;
+  background: ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
 
-  color: #111111;
+  color: ${({ $atFooter }) => ($atFooter ? "#ffffff" : "#083672")};
 
-  font-size: 10px;
+  font-family: "Chillen", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
 
-  font-weight: 700;
+  white-space: nowrap;
 
-  letter-spacing: -0.01em;
+  cursor: pointer;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
-
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease,
+    box-shadow 0.25s ease;
 
   &:hover {
-    transform: translateY(-2px) scale(1.025);
-
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.12);
-  }
-
-  &:hover span {
-    transform: translate(2px, -2px);
-  }
-
-  &:active {
-    transform: translateY(0) scale(0.98);
+    background: #0067d4;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 103, 212, 0.18);
   }
 
   &:focus-visible {
-    outline: 3px solid #d8b66f;
+    outline: 3px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
 
     outline-offset: 4px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
 
-const Arrow = styled.span`
-  display: inline-block;
-
-  font-size: 13px;
-
-  line-height: 1;
-
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-`;
-
-const MobileMenuButton = styled.button`
+const MobileMenuButton = styled.button<{
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
   display: none;
 
-  width: 38px;
-
-  height: 38px;
+  width: 42px;
+  height: 42px;
 
   align-items: center;
-
   justify-content: center;
-
   flex-direction: column;
 
   gap: 6px;
 
-  border: none;
+  padding: 0;
 
+  border: 0;
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.12);
+  background: ${({ $atFooter, $scrolled }) => {
+    if ($atFooter) {
+      return "rgba(8, 54, 114, 0.08)";
+    }
+
+    if ($scrolled) {
+      return "rgba(198, 227, 251, 0.14)";
+    }
+
+    return "rgba(255, 255, 255, 0.1)";
+  }};
 
   cursor: pointer;
 
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.04);
 
-    background: rgba(255, 255, 255, 0.18);
-  }
+    background: ${({ $atFooter, $scrolled }) => {
+      if ($atFooter) {
+        return "rgba(8, 54, 114, 0.14)";
+      }
 
-  &:active {
-    transform: scale(0.95);
+      if ($scrolled) {
+        return "rgba(198, 227, 251, 0.24)";
+      }
+
+      return "rgba(255, 255, 255, 0.18)";
+    }};
   }
 
   &:focus-visible {
-    outline: 3px solid #d8b66f;
+    outline: 3px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
 
-    outline-offset: 4px;
+    outline-offset: 3px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     display: flex;
   }
 `;
 
-const MenuLine = styled.span<{ $open: boolean }>`
-  width: 15px;
+const MenuLine = styled.span<{
+  $open: boolean;
+  $scrolled: boolean;
+  $atFooter: boolean;
+}>`
+  display: block;
 
-  height: 1px;
+  width: 17px;
+  height: 1.5px;
 
-  background: #ffffff;
+  border-radius: 10px;
 
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  background: ${({ $atFooter }) => ($atFooter ? "#083672" : "#ffffff")};
+
+  transition: background 0.3s ease, transform 0.3s ease, width 0.3s ease;
 
   &:first-child {
     transform: ${({ $open }) =>
-      $open ? "translateY(3.5px) rotate(45deg)" : "none"};
+      $open ? "translateY(3.75px) rotate(45deg)" : "none"};
   }
 
   &:last-child {
     transform: ${({ $open }) =>
-      $open ? "translateY(-3.5px) rotate(-45deg)" : "none"};
+      $open ? "translateY(-3.75px) rotate(-45deg)" : "none"};
   }
 `;
 
-const MobileMenu = styled.div<{ $open: boolean }>`
+const MobileMenu = styled.div<{
+  $open: boolean;
+  $atFooter: boolean;
+}>`
   display: none;
 
-  @media (max-width: 900px) {
-    display: flex;
-
+  @media (max-width: 768px) {
     position: absolute;
 
-    top: ${({ $open }) => ($open ? "68px" : "68px")};
-
+    top: 76px;
     left: 4vw;
 
-    right: 4vw;
+    width: 92vw;
 
+    padding: 20px;
+
+    display: flex;
     flex-direction: column;
 
-    padding: 10px;
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    gap: 4px;
 
     border-radius: 24px;
 
-    background: rgba(0, 0, 0, 0.97);
+    background: ${({ $atFooter }) => ($atFooter ? "#c6e3fb" : "#083672")};
 
-    backdrop-filter: blur(25px);
-
-    -webkit-backdrop-filter: blur(25px);
+    box-shadow: ${({ $atFooter }) =>
+      $atFooter
+        ? "0 20px 60px rgba(8, 54, 114, 0.14)"
+        : "0 20px 60px rgba(0, 0, 0, 0.3)"};
 
     opacity: ${({ $open }) => ($open ? 1 : 0)};
+
+    visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
 
     transform: ${({ $open }) =>
       $open ? "translateY(0)" : "translateY(-10px)"};
 
-    visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
-
     pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
 
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease,
+      background 0.3s ease;
   }
 `;
 
-const MobileLink = styled.a`
-  width: 100%;
-
-  padding: 14px;
-
-  color: #f1f1f1;
-
-  font-size: 12px;
-
-  font-weight: 500;
-
-  border-radius: 12px;
-
-  transition: background 0.25s ease, color 0.25s ease, padding-left 0.25s ease,
-    font-weight 0.25s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-
-    color: #ffffff;
-
-    font-weight: 700;
-
-    padding-left: 17px;
-  }
-
-  &:focus-visible {
-    outline: 3px solid #d8b66f;
-
-    outline-offset: -2px;
-
-    color: #ffffff;
-
-    background: rgba(255, 255, 255, 0.08);
-  }
-`;
-
-const MobileCTA = styled.a`
+const MobileLink = styled.a<{
+  $atFooter: boolean;
+}>`
   display: flex;
-
   align-items: center;
-
-  justify-content: center;
-
-  gap: 10px;
-
-  width: 100%;
 
   min-height: 46px;
 
-  margin-top: 6px;
+  padding: 0 14px;
 
-  border-radius: 100px;
+  border-radius: 10px;
 
-  background: #ffffff;
+  color: ${({ $atFooter }) => ($atFooter ? "#083672" : "#ffffff")};
 
-  color: #111111;
+  font-family: "Chillen", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 
-  font-size: 11px;
-
-  font-weight: 700;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
-
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background 0.2s ease, color 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px) scale(1.02);
+    background: ${({ $atFooter }) =>
+      $atFooter ? "rgba(8, 54, 114, 0.08)" : "rgba(198, 227, 251, 0.12)"};
 
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.12);
-  }
-
-  &:hover span {
-    transform: translate(2px, -2px);
-  }
-
-  &:active {
-    transform: translateY(0) scale(0.98);
+    color: ${({ $atFooter }) => ($atFooter ? "#0067d4" : "#c6e3fb")};
   }
 
   &:focus-visible {
-    outline: 3px solid #d8b66f;
+    outline: 2px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
 
-    outline-offset: 4px;
+    outline-offset: 2px;
+  }
+`;
+
+const MobileCTA = styled.button<{
+  $atFooter: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 50px;
+
+  margin-top: 10px;
+
+  border: 0;
+  border-radius: 100px;
+
+  background: ${({ $atFooter }) => ($atFooter ? "#083672" : "#c6e3fb")};
+
+  color: ${({ $atFooter }) => ($atFooter ? "#ffffff" : "#083672")};
+
+  font-family: "Chillen", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+
+  cursor: pointer;
+
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+
+  &:hover {
+    background: #0067d4;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${({ $atFooter }) => ($atFooter ? "#083672" : "#ffffff")};
+
+    outline-offset: 3px;
   }
 `;

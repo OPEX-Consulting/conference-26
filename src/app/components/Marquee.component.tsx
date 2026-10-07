@@ -39,15 +39,11 @@ const marquee = keyframes`
 const Container = styled.section`
   width: 100%;
   overflow: hidden;
-
   background: #ffffff;
-
   padding: 38px 0;
-
   white-space: nowrap;
-
-  border-top: 1px solid #eeeeee;
-  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #c6e3fb;
+  border-bottom: 1px solid #c6e3fb;
 
   @media (max-width: 768px) {
     padding: 30px 0;
@@ -57,11 +53,8 @@ const Container = styled.section`
 const Track = styled.div`
   display: flex;
   align-items: center;
-
   width: max-content;
-
   animation: ${marquee} 32s linear infinite;
-
   will-change: transform;
 
   &:hover {
@@ -72,9 +65,7 @@ const Track = styled.div`
 const Item = styled.div`
   display: flex;
   align-items: center;
-
   gap: 46px;
-
   padding: 0 34px;
 
   @media (max-width: 768px) {
@@ -84,16 +75,12 @@ const Item = styled.div`
 `;
 
 const Text = styled.span`
-  color: #111111;
-
+  color: #083672;
+  font-family: "Chillen", sans-serif;
   font-size: clamp(28px, 3.2vw, 52px);
-
-  font-weight: 600;
-
+  font-weight: 400;
   line-height: 0.95;
-
   letter-spacing: -0.055em;
-
   text-transform: uppercase;
 
   @media (max-width: 768px) {
@@ -104,12 +91,9 @@ const Text = styled.span`
 const Dot = styled.span`
   width: 8px;
   height: 8px;
-
   flex-shrink: 0;
-
   border-radius: 50%;
-
-  background: #b8954a;
+  background: #0067d4;
 
   @media (max-width: 768px) {
     width: 6px;

@@ -1,5 +1,4 @@
 "use client";
-
 import styled from "styled-components";
 import VenueMap from "./VenueMap";
 
@@ -12,7 +11,7 @@ export default function Venue() {
             <Eyebrow>THE VENUE</Eyebrow>
 
             <Heading>
-              Meet at
+              <HeadingLight>Meet at</HeadingLight>
               <br />
               <Accent>The Wheatbaker.</Accent>
             </Heading>
@@ -81,7 +80,7 @@ export default function Venue() {
 
 const Section = styled.section`
   width: 100%;
-  background: #f1eee7;
+  background: #f7faff;
   padding: 125px 0;
   overflow: hidden;
 
@@ -109,23 +108,29 @@ const Header = styled.div`
   }
 `;
 
-const Left = styled.div``;
+const Left = styled.div`
+  min-width: 0;
+`;
 
 const Eyebrow = styled.span`
   display: block;
   margin-bottom: 22px;
-  color: #9a762e;
-  font-size: 11px;
-  font-weight: 700;
+
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 `;
 
 const Heading = styled.h2`
   margin: 0;
-  color: #111111;
+
+  color: #083672;
+
   font-size: clamp(54px, 6vw, 84px);
-  font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.075em;
 
@@ -134,8 +139,15 @@ const Heading = styled.h2`
   }
 `;
 
+const HeadingLight = styled.span`
+  font-family: "Mont", sans-serif;
+  font-weight: 200;
+`;
+
 const Accent = styled.span`
-  color: #9a762e;
+  color: #0067d4;
+  font-family: "Chillen", sans-serif;
+  font-weight: 400;
 `;
 
 const Right = styled.div`
@@ -145,14 +157,17 @@ const Right = styled.div`
 const Description = styled.p`
   max-width: 480px;
   margin: 0;
+
   color: #555555;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.65;
+
+  font-family: "Mont", sans-serif;
+  font-size: 15px;
+  font-weight: 200;
+  line-height: 1.7;
   letter-spacing: -0.018em;
 
   @media (max-width: 700px) {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.6;
   }
 `;
@@ -174,17 +189,22 @@ const VenueInfo = styled.div`
   min-width: 0;
   min-height: 500px;
   height: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   overflow: hidden;
 
   padding: 44px;
+
+  border: 1px solid #c6e3fb;
   border-radius: 24px;
 
   background: #ffffff;
 
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.06), 0 2px 10px rgba(0, 0, 0, 0.025);
+  box-shadow: 0 25px 70px rgba(8, 54, 114, 0.06),
+    0 2px 10px rgba(8, 54, 114, 0.025);
 
   @media (max-width: 850px) {
     min-height: 500px;
@@ -215,21 +235,25 @@ const VenueNumber = styled.span`
   width: 38px;
   height: 38px;
 
-  border: 1px solid rgba(154, 118, 46, 0.3);
+  border: 1px solid rgba(0, 103, 212, 0.3);
   border-radius: 50%;
 
-  color: #9a762e;
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
 `;
 
 const VenueTitle = styled.h3`
   margin: 58px 0 0;
 
-  color: #111111;
+  color: #083672;
+
+  font-family: "Chillen", sans-serif;
   font-size: clamp(42px, 4vw, 58px);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.07em;
 
@@ -246,8 +270,10 @@ const VenueLocation = styled.p`
   margin: 24px 0 0;
 
   color: #555555;
-  font-size: 15px;
-  font-weight: 500;
+
+  font-family: "Mont", sans-serif;
+  font-size: 14px;
+  font-weight: 200;
   line-height: 1.65;
   letter-spacing: -0.01em;
 `;
@@ -258,7 +284,8 @@ const VenueMeta = styled.div`
   gap: 20px;
 
   padding-top: 28px;
-  border-top: 1px solid #e8e5de;
+
+  border-top: 1px solid #c6e3fb;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -273,16 +300,20 @@ const MetaItem = styled.div`
 `;
 
 const MetaLabel = styled.span`
-  color: #9a762e;
-  font-size: 9px;
-  font-weight: 700;
+  color: #0067d4;
+
+  font-family: "Chillen", sans-serif;
+  font-size: 8px;
+  font-weight: 400;
   letter-spacing: 0.16em;
 `;
 
 const MetaValue = styled.span`
-  color: #292929;
-  font-size: 13px;
-  font-weight: 600;
+  color: #083672;
+
+  font-family: "Mont", sans-serif;
+  font-size: 12px;
+  font-weight: 200;
   line-height: 1.4;
 `;
 
@@ -298,11 +329,13 @@ const Directions = styled.a`
 
   border-radius: 999px;
 
-  background: #111111;
+  background: #083672;
   color: #ffffff;
 
-  font-size: 12px;
-  font-weight: 600;
+  font-family: "Chillen", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+
   text-decoration: none;
 
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -310,12 +343,12 @@ const Directions = styled.a`
 
   &:hover {
     transform: translateY(-3px);
-    background: #222222;
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.14);
+    background: #0067d4;
+    box-shadow: 0 12px 25px rgba(0, 103, 212, 0.2);
   }
 
   &:focus-visible {
-    outline: 3px solid #9a762e;
+    outline: 3px solid #0067d4;
     outline-offset: 4px;
   }
 `;
@@ -333,8 +366,10 @@ const Arrow = styled.span`
 
 const CardGlow = styled.div`
   position: absolute;
+
   width: 280px;
   height: 280px;
+
   right: -120px;
   bottom: -130px;
 
@@ -342,8 +377,8 @@ const CardGlow = styled.div`
 
   background: radial-gradient(
     circle,
-    rgba(154, 118, 46, 0.13) 0%,
-    rgba(154, 118, 46, 0.05) 38%,
+    rgba(0, 103, 212, 0.14) 0%,
+    rgba(198, 227, 251, 0.18) 38%,
     transparent 70%
   );
 
@@ -356,9 +391,11 @@ const MapWrapper = styled.div`
   height: 100%;
 
   overflow: hidden;
+
   border-radius: 24px;
 
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.025);
+  box-shadow: 0 25px 70px rgba(8, 54, 114, 0.08),
+    0 2px 10px rgba(8, 54, 114, 0.025);
 
   @media (max-width: 850px) {
     min-height: 430px;
